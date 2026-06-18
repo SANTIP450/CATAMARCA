@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catamarca en Moto 2026</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0d1b2a;color:#d0dde8;min-height:100vh;font-size:14px}
+/* NAV */
+.topbar{background:#060f18;border-bottom:1px solid #1a2d42;padding:0;display:flex;align-items:stretch;overflow-x:auto;position:sticky;top:0;z-index:100}
+.brand{padding:0 1.4rem;display:flex;align-items:center;gap:8px;border-right:1px solid #1a2d42;white-space:nowrap;flex-shrink:0}
+.brand-icon{font-size:1.3rem}
+.brand-name{font-size:.82rem;font-weight:700;color:#f0f6ff;letter-spacing:.03em}
+.brand-sub{font-size:.65rem;color:#4a6a88}
+.tabs{display:flex;overflow-x:auto;flex:1}
+.tab{padding:.9rem 1.1rem;font-size:.72rem;font-weight:600;color:#4a6a88;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;letter-spacing:.04em;text-transform:uppercase;border-right:1px solid #0d1b2a22;user-select:none}
+.tab:hover{color:#8ab0cc;background:#0a1520}
+.tab.active{color:#5ab4ff;border-bottom-color:#5ab4ff;background:#0a1520}
+.tab.day-tab{font-size:.68rem;padding:.9rem .7rem}
+.tab.day-tab.active{color:#ff8c5a;border-bottom-color:#ff6b2b}
+.tab.day-tab.fiambala-tab.active{color:#5ab4ff;border-bottom-color:#1a8fff}
+.tab.day-tab.puna-tab.active{color:#3ddba0;border-bottom-color:#00c977}
+/* PAGES */
+.page{display:none;padding:1.4rem;max-width:1200px;margin:0 auto}
+.page.active{display:block}
+/* CARDS */
+.card{background:#0a1520;border:1px solid #1a2d42;border-radius:10px;padding:1rem 1.2rem;margin-bottom:1rem}
+.card-title{font-size:.82rem;font-weight:700;color:#8ab0cc;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid #1a2d42}
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:1rem}
+.stat{background:#060f18;border:1px solid #1a2d42;border-radius:8px;padding:.9rem 1rem}
+.stat-v{font-size:1.5rem;font-weight:700;color:#f0f6ff;line-height:1}
+.stat-v small{font-size:.7rem;font-weight:400;color:#4a6a88;margin-left:2px}
+.stat-l{font-size:.63rem;color:#4a6a88;margin-top:4px;text-transform:uppercase;letter-spacing:.06em}
+.stat-i{font-size:1rem;margin-bottom:5px}
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem}
+@media(max-width:700px){.g2,.g3{grid-template-columns:1fr}}
+/* TIMELINE */
+.timeline{position:relative;padding-left:1.8rem}
+.timeline::before{content:'';position:absolute;left:7px;top:0;bottom:0;width:2px;background:#1a2d42}
+.tl-item{position:relative;margin-bottom:1.2rem;padding-left:.8rem}
+.tl-dot{position:absolute;left:-1.8rem;top:3px;width:14px;height:14px;border-radius:50%;border:2px solid #0d1b2a;flex-shrink:0}
+.tl-dot.orange{background:#ff6b2b}
+.tl-dot.blue{background:#1a8fff}
+.tl-dot.green{background:#00c977}
+.tl-dot.teal{background:#00b4aa}
+.tl-dot.red{background:#e24b4a}
+.tl-dot.gray{background:#4a6a88}
+.tl-title{font-size:.8rem;font-weight:600;color:#d0dde8;margin-bottom:2px}
+.tl-sub{font-size:.72rem;color:#5a7a96;line-height:1.45}
+.tl-badge{display:inline-block;font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:20px;margin-top:4px;letter-spacing:.05em}
+.badge-orange{background:#ff6b2b22;color:#ff8c5a;border:1px solid #ff6b2b44}
+.badge-blue{background:#1a8fff22;color:#5ab4ff;border:1px solid #1a8fff44}
+.badge-green{background:#00c97722;color:#3ddba0;border:1px solid #00c97744}
+.badge-amber{background:#f5c84222;color:#f5c842;border:1px solid #f5c84244}
+.badge-red{background:#e24b4a22;color:#e27a7a;border:1px solid #e24b4a44}
+/* TABLES */
+table{width:100%;border-collapse:collapse}
+th{font-size:.65rem;font-weight:700;color:#4a6a88;text-transform:uppercase;letter-spacing:.07em;padding:.5rem .7rem;text-align:left;border-bottom:1px solid #1a2d42}
+td{font-size:.75rem;color:#a0b8cc;padding:.45rem .7rem;border-bottom:1px solid #0f1e2d}
+tr:hover td{background:#0a1520}
+tr td:first-child{color:#d0dde8;font-weight:500}
+/* FOOD */
+.food-item{display:flex;gap:12px;padding:.7rem 0;border-bottom:1px solid #0f1e2d}
+.food-item:last-child{border-bottom:none}
+.food-icon{font-size:1.4rem;width:32px;flex-shrink:0;text-align:center}
+.food-name{font-size:.8rem;font-weight:600;color:#d0dde8;margin-bottom:2px}
+.food-desc{font-size:.7rem;color:#5a7a96;line-height:1.4}
+.food-price{font-size:.65rem;color:#3ddba0;margin-top:3px;font-weight:600}
+/* HOTELS */
+.hotel-item{display:flex;gap:12px;align-items:flex-start;padding:.7rem 0;border-bottom:1px solid #0f1e2d}
+.hotel-item:last-child{border-bottom:none}
+.hotel-stars{color:#f5c842;font-size:.75rem;margin-bottom:2px}
+.hotel-name{font-size:.8rem;font-weight:600;color:#d0dde8}
+.hotel-loc{font-size:.68rem;color:#5a7a96}
+.hotel-price{font-size:.7rem;color:#3ddba0;font-weight:600}
+.hotel-note{font-size:.65rem;color:#4a6a88;margin-top:2px}
+/* DAY PAGE */
+.day-header{background:linear-gradient(135deg,#060f18 0%,#0a1a28 100%);border:1px solid #1a2d42;border-radius:12px;padding:1.4rem;margin-bottom:1rem;display:flex;gap:1.2rem;align-items:flex-start}
+.day-num-big{font-size:2.5rem;font-weight:800;color:#1a2d42;line-height:1;min-width:60px}
+.day-info-main{}
+.day-title{font-size:1.1rem;font-weight:700;color:#f0f6ff;margin-bottom:3px}
+.day-route{font-size:.78rem;color:#8ab0cc;margin-bottom:.5rem}
+.day-pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{font-size:.62rem;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.04em}
+/* VIDEO GRID */
+.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.8rem}
+.video-card{background:#060f18;border:1px solid #1a2d42;border-radius:8px;overflow:hidden;cursor:pointer;transition:border-color .15s}
+.video-card:hover{border-color:#2a4060}
+.video-thumb{position:relative;padding-top:56.25%;background:#0a1520;overflow:hidden}
+.video-thumb iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
+.video-thumb-img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
+.play-overlay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:42px;height:42px;background:#ff0000cc;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.video-info{padding:.6rem .8rem}
+.video-channel{font-size:.62rem;font-weight:700;color:#5ab4ff;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+.video-title{font-size:.72rem;color:#a0b8cc;line-height:1.35}
+/* MAP */
+.map-frame{width:100%;height:450px;border-radius:10px;border:1px solid #1a2d42;overflow:hidden}
+.map-tabs{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.map-tab{font-size:.68rem;font-weight:600;padding:5px 14px;border-radius:20px;cursor:pointer;border:1px solid #1a2d42;color:#4a6a88;background:#060f18;transition:all .15s}
+.map-tab.active{background:#1a8fff22;color:#5ab4ff;border-color:#1a8fff44}
+/* TIPS */
+.tip-item{display:flex;gap:10px;padding:.65rem 0;border-bottom:1px solid #0f1e2d}
+.tip-item:last-child{border-bottom:none}
+.tip-icon{font-size:1.1rem;width:28px;flex-shrink:0;text-align:center;margin-top:1px}
+.tip-text{font-size:.75rem;color:#8ab0cc;line-height:1.5}
+.tip-text strong{color:#d0dde8;font-weight:600}
+/* YOUTUBER CARDS */
+.yt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.7rem;margin-bottom:1rem}
+.yt-card{background:#060f18;border:1px solid #1a2d42;border-radius:8px;padding:.7rem;text-align:center;cursor:pointer;transition:border-color .15s}
+.yt-card:hover{border-color:#ff4444}
+.yt-avatar{width:44px;height:44px;border-radius:50%;background:#1a2d42;margin:0 auto .4rem;display:flex;align-items:center;justify-content:center;font-size:1.3rem;border:2px solid #ff444444}
+.yt-name{font-size:.7rem;font-weight:700;color:#d0dde8;margin-bottom:2px}
+.yt-desc{font-size:.6rem;color:#4a6a88;line-height:1.3}
+
+/* HORARIO BAR */
+.horario-bar{display:flex;align-items:center;gap:0;margin-top:.8rem;background:#060f18;border:1px solid #1a2d42;border-radius:8px;overflow:hidden}
+.hor-block{flex:1;padding:.5rem .8rem;text-align:center;border-right:1px solid #1a2d42}
+.hor-block:last-child{border-right:none}
+.hor-label{font-size:.58rem;font-weight:700;color:#4a6a88;text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px}
+.hor-val{font-size:.9rem;font-weight:700;color:#f0f6ff;line-height:1}
+.hor-sub{font-size:.6rem;color:#4a6a88;margin-top:1px}
+.hor-block.libre{background:#00c97710}
+.hor-block.libre .hor-label{color:#3ddba0}
+.hor-block.libre .hor-val{color:#3ddba0}
+.libre-banner{display:flex;align-items:center;gap:8px;background:#00c97712;border:1px solid #00c97730;border-radius:6px;padding:.45rem .8rem;margin-top:.6rem}
+.libre-banner-icon{font-size:1rem}
+.libre-banner-text{font-size:.72rem;color:#3ddba0;font-weight:600}
+.libre-banner-sub{font-size:.65rem;color:#3ddba088;margin-top:1px}
+
+/* SEPARATOR */
+.sep{height:1px;background:#1a2d42;margin:.8rem 0}
+h2{font-size:.9rem;font-weight:700;color:#8ab0cc;letter-spacing:.05em;text-transform:uppercase;margin:.8rem 0 .5rem}
+h3{font-size:.82rem;font-weight:600;color:#d0dde8;margin:.6rem 0 .4rem}
+p{font-size:.75rem;color:#6a8aaa;line-height:1.55;margin-bottom:.5rem}
+.highlight{color:#5ab4ff}
+.warn{color:#f5c842}
+.danger{color:#e27a7a}
+.success{color:#3ddba0}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="brand-icon">🏍️</span>
+    <div>
+      <div class="brand-name">Catamarca 2026</div>
+      <div class="brand-sub">CF450 MT · 10–23 oct</div>
+    </div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="showPage('generalidades')">📊 Generalidades</div>
+    <div class="tab" onclick="showPage('comer')">🍽️ Comer</div>
+    <div class="tab" onclick="showPage('pernocte')">🏨 Pernocte</div>
+    <div class="tab day-tab" onclick="showPage('d1')">D1</div>
+    <div class="tab day-tab" onclick="showPage('d2')">D2</div>
+    <div class="tab day-tab" onclick="showPage('d3')">D3</div>
+    <div class="tab day-tab" onclick="showPage('d4')">D4</div>
+    <div class="tab day-tab" onclick="showPage('d5')">D5</div>
+    <div class="tab day-tab fiambala-tab" onclick="showPage('d6')">D6 ★</div>
+    <div class="tab day-tab fiambala-tab" onclick="showPage('d7')">D7</div>
+    <div class="tab day-tab fiambala-tab" onclick="showPage('d8')">D8</div>
+    <div class="tab day-tab" onclick="showPage('d9')">D9</div>
+    <div class="tab day-tab puna-tab" onclick="showPage('d10')">D10</div>
+    <div class="tab day-tab puna-tab" onclick="showPage('d11')">D11</div>
+    <div class="tab day-tab" onclick="showPage('d12')">D12</div>
+    <div class="tab day-tab" onclick="showPage('d13')">D13 ✈️</div>
+    <div class="tab" onclick="showPage('mapas')">🗺️ Mapas</div>
+    <div class="tab" onclick="showPage('tips')">💡 Tips</div>
+  </div>
+</div>
+
+<!-- ==================== GENERALIDADES ==================== -->
+<div id="page-generalidades" class="page active">
+  <div class="stats-row">
+    <div class="stat"><div class="stat-i">📅</div><div class="stat-v">13<small>días</small></div><div class="stat-l">10/10 → 23/10</div></div>
+    <div class="stat"><div class="stat-i">🛣️</div><div class="stat-v">4.150<small>km</small></div><div class="stat-l">Total ambas motos</div></div>
+    <div class="stat"><div class="stat-i">🏨</div><div class="stat-v">12<small>noches</small></div><div class="stat-l">8 hoteles distintos</div></div>
+    <div class="stat"><div class="stat-i">⛽</div><div class="stat-v">228<small>L</small></div><div class="stat-l">Por moto · ~$365k</div></div>
+    <div class="stat"><div class="stat-i">⛰️</div><div class="stat-v">3.690<small>m</small></div><div class="stat-l">Alt. máx. Cono Arita</div></div>
+    <div class="stat"><div class="stat-i">🏍️</div><div class="stat-v">2<small>motos</small></div><div class="stat-l">CF450 MT · 5.5L/100</div></div>
+    <div class="stat"><div class="stat-i">🔵</div><div class="stat-v">3<small>noches</small></div><div class="stat-l">Fiambalá Abaucan SPA</div></div>
+    <div class="stat"><div class="stat-i">✈️</div><div class="stat-v">19:35<small>CTC</small></div><div class="stat-l">Vuelo regreso 23/10</div></div>
+  </div>
+
+  <div class="g2">
+    <div>
+      <div class="card">
+        <div class="card-title">Itinerario completo</div>
+        <table>
+          <thead><tr><th>Día</th><th>Fecha</th><th>Tramo</th><th>Km</th><th>Pernocte</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Vie 10/10</td><td>CABA → Córdoba</td><td>710</td><td>Córdoba</td></tr>
+            <tr><td>2</td><td>Sáb 11/10</td><td>Córdoba → La Rioja</td><td>380</td><td>La Rioja</td></tr>
+            <tr><td>3</td><td>Dom 12/10</td><td>La Rioja → Miranda → Chilecito</td><td>220</td><td>Chilecito</td></tr>
+            <tr><td>4</td><td>Lun 13/10</td><td>Excursión Famatina / La Mejicana</td><td>130r</td><td>Chilecito</td></tr>
+            <tr><td>5</td><td>Mar 14/10</td><td>Chilecito → Tinogasta</td><td>140</td><td>Tinogasta</td></tr>
+            <tr style="background:#0a1a2e"><td>6</td><td style="color:#5ab4ff">Mié 15/10</td><td style="color:#5ab4ff">Tinogasta → Fiambalá ★★★★★</td><td>49</td><td style="color:#5ab4ff">Fiambalá</td></tr>
+            <tr style="background:#0a1a2e"><td>7</td><td style="color:#5ab4ff">Jue 16/10</td><td>Fiambalá → Seismiles</td><td>200</td><td style="color:#5ab4ff">Fiambalá</td></tr>
+            <tr style="background:#0a1a2e"><td>8</td><td style="color:#5ab4ff">Vie 17/10</td><td>Fiambalá — Tatón + Termas</td><td>60</td><td style="color:#5ab4ff">Fiambalá</td></tr>
+            <tr><td>9</td><td>Sáb 18/10</td><td>Checkout 10am → Belén + Shincal</td><td>210</td><td>Belén</td></tr>
+            <tr><td>10</td><td>Dom 19/10</td><td>Belén → Campo Pómez → Antofagasta</td><td>280r</td><td>Antofagasta ★</td></tr>
+            <tr><td>11</td><td>Lun 20/10</td><td>Antofagasta → Tolar Grande → Cono Arita</td><td>350</td><td>Tolar Grande ★</td></tr>
+            <tr><td>12</td><td>Mar 21/10</td><td>Tolar Grande → Belén → Catamarca</td><td>340</td><td>Catamarca cap.</td></tr>
+            <tr><td>13</td><td style="color:#f5c842">Jue 23/10</td><td style="color:#f5c842">Entrega motos + ✈️ CTC 19:35</td><td>—</td><td style="color:#f5c842">CABA ✅</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-title">Horas de conducción por día</div>
+        <table>
+          <thead><tr><th>Día</th><th>Ruta</th><th>Hs cond.</th><th>Total día</th><th>Tipo</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>CABA→CBA</td><td>8.9h</td><td>~11h</td><td>Asfalto</td></tr>
+            <tr><td>2</td><td>CBA→LR</td><td>4.8h</td><td>~7h</td><td>Asfalto</td></tr>
+            <tr><td>3</td><td>LR→Chilecito</td><td>3.2h</td><td>~6h</td><td>Curvas ★★★</td></tr>
+            <tr><td>4</td><td>Famatina</td><td>2.6h</td><td>~9h</td><td>Ripio 4.600m</td></tr>
+            <tr><td>5</td><td>Chilecito→Tino.</td><td>2.1h</td><td>~5h</td><td>RP11 baches</td></tr>
+            <tr style="color:#5ab4ff"><td>6</td><td>Tino.→Fiambalá</td><td>0.6h</td><td>~3h</td><td>Adobe RN60</td></tr>
+            <tr style="color:#5ab4ff"><td>7</td><td>Seismiles</td><td>2.5h</td><td>~7h</td><td>Asfalto ★★★★★</td></tr>
+            <tr style="color:#5ab4ff"><td>8</td><td>Tatón+Termas</td><td>1.0h</td><td>~7h</td><td>Relax</td></tr>
+            <tr><td>9</td><td>→Belén</td><td>2.7h</td><td>~6h</td><td>RN40+RP4</td></tr>
+            <tr style="color:#3ddba0"><td>10</td><td>→Campo Pómez</td><td>5.6h</td><td>~10h</td><td>RIPIO ★★★★★</td></tr>
+            <tr style="color:#3ddba0"><td>11</td><td>→Cono Arita</td><td>6.4h</td><td>~12h</td><td>Salar ★★★★★</td></tr>
+            <tr><td>12</td><td>→Catamarca</td><td>5.2h</td><td>~9h</td><td>Asfalto largo</td></tr>
+            <tr><td>13</td><td>Libre + vuelo</td><td>—</td><td>—</td><td>CTC 19:35</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title">CF450 MT — Datos clave</div>
+        <table>
+          <thead><tr><th>Parámetro</th><th>Valor</th></tr></thead>
+          <tbody>
+            <tr><td>Consumo</td><td>5.5 L/100 km</td></tr>
+            <tr><td>Tanque</td><td>17.5 L</td></tr>
+            <tr><td>Autonomía</td><td>~318 km (con reserva 291 km)</td></tr>
+            <tr><td>Vel. asfalto</td><td>80 km/h promedio</td></tr>
+            <tr><td>Vel. ripio</td><td>50 km/h (RP43) / 40 km/h (salar)</td></tr>
+            <tr><td>Nafta oct 2026</td><td>~$1.600/L (norte argentino)</td></tr>
+            <tr><td>Costo nafta total</td><td>~$364.000 ARS por moto</td></tr>
+            <tr><td>Presión salar</td><td>Bajar a 1.7 bar para el salar</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== COMER ==================== -->
+<div id="page-comer" class="page">
+  <div class="g2">
+    <div>
+      <div class="card">
+        <div class="card-title">🍖 La Rioja & Chilecito</div>
+        <div class="food-item"><div class="food-icon">🥩</div><div><div class="food-name">El Arriero (La Rioja capital)</div><div class="food-desc">Parrilla regional, cabrito al asador, locro norteño. Centro histórico.</div><div class="food-price">$18.000–$28.000 pp</div></div></div>
+        <div class="food-item"><div class="food-icon">🍷</div><div><div class="food-name">Bodega Nonino (Chilecito)</div><div class="food-desc">Cata + tabla de quesos y fiambres riojanos. Syrah de altura.</div><div class="food-price">$12.000–$20.000 pp</div></div></div>
+        <div class="food-item"><div class="food-icon">🥙</div><div><div class="food-name">Mercado Artesanal Chilecito</div><div class="food-desc">Empanadas horneadas, humitas, tamales. Desayuno ideal.</div><div class="food-price">$2.000–$4.000 c/u</div></div></div>
+        <div class="food-item"><div class="food-icon">☕</div><div><div class="food-name">Café del Cable (Chilecito)</div><div class="food-desc">Frente al histórico cable carril. Medialunas, café, vista serrana.</div><div class="food-price">$6.000–$10.000 pp</div></div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">🌵 Tinogasta & Fiambalá</div>
+        <div class="food-item"><div class="food-icon">🍷</div><div><div class="food-name">Bodega Don Ceferino (Tinogasta)</div><div class="food-desc">Tarde libre en Tinogasta. Malbec y Torrontés a 1.200 msnm. Reservar visita.</div><div class="food-price">$8.000–$15.000 cata</div></div></div>
+        <div class="food-item"><div class="food-icon">🥘</div><div><div class="food-name">Hotel Abaucan SPA (Fiambalá)</div><div class="food-desc">Cordero al asador, empanadas, locro. El mejor restaurante de la zona. Comer acá las 3 noches.</div><div class="food-price">$20.000–$35.000 pp</div></div></div>
+        <div class="food-item"><div class="food-icon">🫓</div><div><div class="food-name">Parador El Adobe (Fiambalá)</div><div class="food-desc">Empanadas regionales, humitas. Económico y auténtico. Centro del pueblo.</div><div class="food-price">$8.000–$15.000 pp</div></div></div>
+        <div class="food-item"><div class="food-icon">🍇</div><div><div class="food-name">Finca Don Diego (Fiambalá)</div><div class="food-desc">Bodega 1.505 msnm. Syrah y Malbec únicos. Visita + cata. NO ir de paso en moto — solo con tarde libre. Reservar la noche anterior.</div><div class="food-price">Cata ~$10.000</div></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-title">🏺 Belén & Shincal</div>
+        <div class="food-item"><div class="food-icon">🦙</div><div><div class="food-name">Fonda El Portón (Belén)</div><div class="food-desc">Guiso de llama, locro norteño, empanadas. Auténtico sabor regional. Recomendado por locales.</div><div class="food-price">$10.000–$18.000 pp</div></div></div>
+        <div class="food-item"><div class="food-icon">🥐</div><div><div class="food-name">Panadería del Centro (Belén)</div><div class="food-desc">Las mejores empanadas horneadas del viaje. $1.500–$2.000 c/u. OBLIGATORIO.</div><div class="food-price">$1.500–$2.000 c/u</div></div></div>
+        <div class="food-item"><div class="food-icon">☕</div><div><div class="food-name">Bar Plaza Belén</div><div class="food-desc">Café, medialunas, desayuno clásico. Frente a la plaza principal. Llegada y partida.</div><div class="food-price">$5.000–$8.000 pp</div></div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">🏔️ Puna alta (Antofagasta / Tolar)</div>
+        <div class="food-item"><div class="food-icon">🍲</div><div><div class="food-name">Hostería Puerta del Sol (Antofagasta)</div><div class="food-desc">Menú regional sencillo, lo que haya del día. Única opción real en el pueblo.</div><div class="food-price">$10.000–$15.000 pp</div></div></div>
+        <div class="food-item"><div class="food-icon">🥫</div><div><div class="food-name">Campo Pómez / Salar</div><div class="food-desc">⚠️ NO hay nada en la ruta. Llevar vianda completa desde Belén/Antofagasta. Agua 3L por persona mínimo.</div><div class="food-price">Llevar todo</div></div></div>
+        <div class="food-item"><div class="food-icon">🏘️</div><div><div class="food-name">Fonda local Tolar Grande</div><div class="food-desc">Comida regional sencilla. Preguntar en la hostería municipal. Básico pero cálido.</div><div class="food-price">$8.000–$12.000 pp</div></div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">📍 Reglas de oro para comer</div>
+        <div class="tip-item"><div class="tip-icon">💵</div><div class="tip-text"><strong>Siempre efectivo en la puna.</strong> Muchos locales no tienen POS. Sacar plata antes de Belén.</div></div>
+        <div class="tip-item"><div class="tip-icon">🕐</div><div class="tip-text"><strong>Horarios norteños.</strong> Almuerzo 12:30–15:00. Cena desde las 21hs. No busques nada antes.</div></div>
+        <div class="tip-item"><div class="tip-icon">🧃</div><div class="tip-text"><strong>Hidratación en altura.</strong> Beber 2–3L de agua diarios desde el día 4. La altura seca y agota sin avisarte.</div></div>
+        <div class="tip-item"><div class="tip-icon">🥩</div><div class="tip-text"><strong>Proteínas de la región.</strong> Llama, cabrito, cordero. No las rechaces — son el highlight gastronómico.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PERNOCTE ==================== -->
+<div id="page-pernocte" class="page">
+  <div class="g2">
+    <div>
+      <div class="card">
+        <div class="card-title">🏨 Hoteles confirmados / sugeridos</div>
+        <div class="hotel-item">
+          <div style="min-width:30px;text-align:center;font-size:1.1rem">🌆</div>
+          <div>
+            <div class="hotel-stars">★★★★</div>
+            <div class="hotel-name">NH Córdoba / Howard Johnson — Noches 1</div>
+            <div class="hotel-loc">Córdoba capital · Zona Centro</div>
+            <div class="hotel-price">$95.000/noche ≈ USD 63</div>
+            <div class="hotel-note">Estacionamiento cubierto para motos. 710 km del día 1 — merece buena cama.</div>
+          </div>
+        </div>
+        <div class="hotel-item">
+          <div style="min-width:30px;text-align:center;font-size:1.1rem">🏛️</div>
+          <div>
+            <div class="hotel-stars">★★★</div>
+            <div class="hotel-name">Hotel King / Sumampa — Noche 2</div>
+            <div class="hotel-loc">La Rioja capital · Centro</div>
+            <div class="hotel-price">$62.000/noche ≈ USD 41</div>
+            <div class="hotel-note">Cómodo, central, aceptable. Noche de tránsito — no perder tiempo buscando algo mejor.</div>
+          </div>
+        </div>
+        <div class="hotel-item">
+          <div style="min-width:30px;text-align:center;font-size:1.1rem">🌄</div>
+          <div>
+            <div class="hotel-stars">★★★</div>
+            <div class="hotel-name">Hotel Ruta 40 / Casa Arroyo — Noches 3 y 4</div>
+            <div class="hotel-loc">Chilecito · Zona céntrica</div>
+            <div class="hotel-price">$45.000–$60.000/noche ≈ USD 30–40</div>
+            <div class="hotel-note">Patio cubierto para motos. 2 noches. Base para excursión Famatina.</div>
+          </div>
+        </div>
+        <div class="hotel-item">
+          <div style="min-width:30px;text-align:center;font-size:1.1rem">🍷</div>
+          <div>
+            <div class="hotel-stars">★★★</div>
+            <div class="hotel-name">Posada del Sol / Tinogasta Centro — Noche 5</div>
+            <div class="hotel-loc">Tinogasta · Catamarca</div>
+            <div class="hotel-price">$38.000–$50.000/noche ≈ USD 25–33</div>
+            <div class="hotel-note">Noche de tránsito. Tarde libre para bodega Don Ceferino. Solo 49km a Fiambalá mañana.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-title">🌟 Fiambalá — Hotel Abaucan SPA (RESERVAR YA)</div>
+        <div style="background:#0d1e35;border:1px solid #1a8fff44;border-radius:8px;padding:1rem;margin-bottom:.8rem">
+          <div class="hotel-stars" style="font-size:1rem">★★★★★</div>
+          <div class="hotel-name" style="font-size:.95rem;color:#5ab4ff;margin-bottom:4px">Hotel Abaucan SPA — 3 noches (15, 16, 17/10)</div>
+          <div class="hotel-loc" style="margin-bottom:4px">Fiambalá, Catamarca · RN60 · (03837) 496-300</div>
+          <div class="hotel-price" style="font-size:.8rem">$85.000–$100.000/noche ≈ USD 57–67</div>
+          <div class="hotel-note" style="color:#8ab0cc;margin-top:6px">Garage cerrado para motos · Piscina · Restaurante · SPA termal propio · Única opción de calidad en la zona.<br><strong style="color:#f5c842">⚠️ Reservar mínimo 30 días antes. Checkout Sáb 18/10 a las 10:00 AM.</strong></div>
+        </div>
+        <div class="hotel-item">
+          <div style="min-width:30px;text-align:center;font-size:1.1rem">🧶</div>
+          <div>
+            <div class="hotel-stars">★★★</div>
+            <div class="hotel-name">Hostería El Molino / Hotel Samai — Noche 9</div>
+            <div class="hotel-loc">Belén · Catamarca · (03835) 461-555</div>
+            <div class="hotel-price">$35.000–$50.000/noche ≈ USD 23–33</div>
+            <div class="hotel-note">Patio para motos. Básico pero OK. Llevar efectivo.</div>
+          </div>
+        </div>
+        <div class="hotel-item">
+          <div style="min-width:30px;text-align:center;font-size:1.1rem">🏔️</div>
+          <div>
+            <div class="hotel-stars">★★</div>
+            <div class="hotel-name">Hostería Puerta del Sol — Noche 10</div>
+            <div class="hotel-loc">Antofagasta de la Sierra · 3.300 msnm</div>
+            <div class="hotel-price">$30.000–$40.000/noche ≈ USD 20–27</div>
+            <div class="hotel-note">Única opción. Reservar con antelación. Llamar antes de salir de Belén.</div>
+          </div>
+        </div>
+        <div class="hotel-item">
+          <div style="min-width:30px;text-align:center;font-size:1.1rem">🏕️</div>
+          <div>
+            <div class="hotel-stars">★</div>
+            <div class="hotel-name">Hostería Municipal / Casa de familia — Noche 11</div>
+            <div class="hotel-loc">Tolar Grande · Salta · 3.520 msnm</div>
+            <div class="hotel-price">$20.000–$35.000/noche ≈ USD 13–23</div>
+            <div class="hotel-note">Muy básico pero limpio. Noche de aventura pura. Pedir en el pueblo.</div>
+          </div>
+        </div>
+        <div class="hotel-item">
+          <div style="min-width:30px;text-align:center;font-size:1.1rem">🏙️</div>
+          <div>
+            <div class="hotel-stars">★★★★</div>
+            <div class="hotel-name">Amérian Park Hotel / Casino — Noche 12</div>
+            <div class="hotel-loc">San Fernando del Valle · Catamarca capital</div>
+            <div class="hotel-price">$105.000/noche ≈ USD 70</div>
+            <div class="hotel-note">Merecido lujo final. Mañana libre antes del vuelo CTC 19:35.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== DÍAS 1–13 ==================== -->
+<div id="page-d1" class="page">
+  <div class="day-header">
+    <div class="day-num-big">01</div>
+    <div class="day-info-main">
+      <div class="day-title">CABA → Córdoba</div>
+      <div class="day-route">Vie 10/10 · 710 km · Autopista RN9 · Salida 06:00 · Llegada ~15:00</div>
+      <div class="day-pills"><span class="pill badge-orange">Asfalto</span><span class="pill badge-amber">8.9 hs conducción</span><span class="pill" style="background:#4a6a8822;color:#8ab0cc;border:1px solid #4a6a8844">1 carga nafta km 318</span></div>
+    </div>
+  </div>
+    <div class="horario-bar">
+      <div class="hor-block">
+        <div class="hor-label">⏰ Salida</div>
+        <div class="hor-val">06:00</div>
+        <div class="hor-sub">hotel</div>
+      </div>
+      <div class="hor-block">
+        <div class="hor-label">🏁 Llegada</div>
+        <div class="hor-val">~15:00</div>
+        <div class="hor-sub">pernocte</div>
+      </div>
+      <div class="hor-block libre">
+        <div class="hor-label">🟢 Tiempo libre</div>
+        <div class="hor-val" style="color:#3ddba0">~5 hs</div>
+        <div class="hor-sub">estimado</div>
+      </div>
+    </div>
+    <div class="libre-banner" style="background:#00c97712;border-color:#00c97730">
+      <span class="libre-banner-icon">✅</span>
+      <div>
+        <div class="libre-banner-text" style="color:#3ddba0">~5 hs de tiempo libre</div>
+        <div class="libre-banner-sub">Tarde libre en Córdoba. Recorrer el centro histórico, la Manzana Jesuítica, cena tranquila.</div>
+      </div>
+    </div>
+  <div class="g2">
+    <div>
+      <div class="card">
+        <div class="card-title">Detalle del día</div>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title">06:00 — Salida CABA</div><div class="tl-sub">Bulnes 1945. Salir temprano para evitar tráfico de Buenos Aires. Autopista RN9 Norte.</div></div>
+          <div class="tl-item"><div class="tl-dot gray"></div><div class="tl-title">~09:30 — Parada km 318</div><div class="tl-sub">Carga de nafta obligatoria. Descanso 30 min. Café y estirar piernas.</div></div>
+          <div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title">~15:00 — Córdoba capital</div><div class="tl-sub">Check-in NH Córdoba / Howard Johnson. Tarde libre. Cena y descanso — el día 2 es más corto.</div></div>
+        </div>
+        <div class="sep"></div>
+        <div class="tip-item"><div class="tip-icon">⚡</div><div class="tip-text"><strong>Truco del primer día:</strong> Salir 06:00 en punto. Cada hora de retraso se paga en tránsito en el GBA. Desayunar rápido o llevar algo para el camino.</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-title">📺 Videos de los canales — inspiración para la ruta</div>
+        <div class="video-grid">
+          <div class="video-card" onclick="openYT('https://www.youtube.com/@PabloImhoff')">
+            <div class="video-thumb" style="background:#1a0a0a;display:flex;align-items:center;justify-content:center;padding-top:0;height:100px">
+              <div style="text-align:center"><div style="font-size:2rem">🏍️</div><div style="font-size:.7rem;color:#ff4444;margin-top:4px">Pablo Imhoff</div></div>
+            </div>
+            <div class="video-info"><div class="video-channel">Pablo Imhoff</div><div class="video-title">Viaje por Argentina — canal completo. Rutas del NOA y puna.</div></div>
+          </div>
+          <div class="video-card" onclick="openYT('https://www.youtube.com/@virguidetti/videos')">
+            <div class="video-thumb" style="background:#1a0a1a;display:flex;align-items:center;justify-content:center;padding-top:0;height:100px">
+              <div style="text-align:center"><div style="font-size:2rem">🏍️</div><div style="font-size:.7rem;color:#ff4444;margin-top:4px">Vir Guidetti</div></div>
+            </div>
+            <div class="video-info"><div class="video-channel">Vir Guidetti</div><div class="video-title">Catamarca en moto — RN60, Seismiles, NOA completo.</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Youtubers del viaje</div>
+        <div class="yt-grid">
+          <div class="yt-card" onclick="openYT('https://www.youtube.com/@virguidetti/videos')"><div class="yt-avatar">🏍️</div><div class="yt-name">Vir Guidetti</div><div class="yt-desc">Catamarca, RN60, NOA, Benelli TRK</div></div>
+          <div class="yt-card" onclick="openYT('https://www.youtube.com/@PabloImhoff')"><div class="yt-avatar">🌎</div><div class="yt-name">Pablo Imhoff</div><div class="yt-desc">Pablito Viajero — Ushuaia a Alaska</div></div>
+          <div class="yt-card" onclick="openYT('https://www.youtube.com/@yagoxamerica')"><div class="yt-avatar">🗺️</div><div class="yt-name">Yago x América</div><div class="yt-desc">Ricardo Lorenz — 20 países, puna</div></div>
+          <div class="yt-card" onclick="openYT('https://www.youtube.com/results?search_query=los+picantes+de+la+puna')"><div class="yt-avatar">🌋</div><div class="yt-name">Picantes de la Puna</div><div class="yt-desc">RN40, Catamarca, Ruta 40 Benelli</div></div>
+          <div class="yt-card" onclick="openYT('https://www.youtube.com/c/GinoValentiniEnMotoporArgentina')"><div class="yt-avatar">🇦🇷</div><div class="yt-name">Gino Valentini</div><div class="yt-desc">Nómade argentino — turismo nacional</div></div>
+          <div class="yt-card" onclick="openYT('https://www.youtube.com/results?search_query=seba+adventure+moto')"><div class="yt-avatar">🛣️</div><div class="yt-name">Seba Adventure</div><div class="yt-desc">125.000km América — "Pantera"</div></div>
+          <div class="yt-card" onclick="openYT('https://www.youtube.com/results?search_query=trailenando+moto+argentina')"><div class="yt-avatar">🏔️</div><div class="yt-name">Trailenando</div><div class="yt-desc">Trail & enduro por Argentina</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="page-d2" class="page">
+  <div class="day-header"><div class="day-num-big">02</div><div class="day-info-main"><div class="day-title">Córdoba → La Rioja</div><div class="day-route">Sáb 11/10 · 380 km · RN38 · Salida 07:30 · Llegada ~14:00</div><div class="day-pills"><span class="pill badge-orange">Asfalto RN38</span><span class="pill badge-amber">4.8 hs conducción</span><span class="pill" style="background:#00c97722;color:#3ddba0;border:1px solid #00c97744">Sin carga de nafta</span></div></div></div>
+    <div class="horario-bar">
+      <div class="hor-block">
+        <div class="hor-label">⏰ Salida</div>
+        <div class="hor-val">07:30</div>
+        <div class="hor-sub">hotel</div>
+      </div>
+      <div class="hor-block">
+        <div class="hor-label">🏁 Llegada</div>
+        <div class="hor-val">~14:00</div>
+        <div class="hor-sub">pernocte</div>
+      </div>
+      <div class="hor-block libre">
+        <div class="hor-label">🟢 Tiempo libre</div>
+        <div class="hor-val" style="color:#3ddba0">~5 hs</div>
+        <div class="hor-sub">estimado</div>
+      </div>
+    </div>
+    <div class="libre-banner" style="background:#00c97712;border-color:#00c97730">
+      <span class="libre-banner-icon">✅</span>
+      <div>
+        <div class="libre-banner-text" style="color:#3ddba0">~5 hs de tiempo libre</div>
+        <div class="libre-banner-sub">Tarde libre en La Rioja. Ciudad pequeña y tranquila. Plaza 25 de Mayo, Catedral, descanso.</div>
+      </div>
+    </div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Detalle del día</div><div class="timeline"><div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title">07:30 — Salida Córdoba</div><div class="tl-sub">Cargar nafta lleno antes de salir. RN38 dirección norte. Autopista hasta Villa Carlos Paz, luego ruta libre.</div></div><div class="tl-item"><div class="tl-dot gray"></div><div class="tl-title">~11:00 — Zona Cruz del Eje</div><div class="tl-sub">Paisaje serrano cordobés. Pausa opcional para café. Empieza a verse el cambio hacia el norte árido.</div></div><div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title">~14:00 — La Rioja capital</div><div class="tl-sub">Hotel King / Sumampa. Tarde libre en la ciudad. Visitar plaza y catedral. Descanso — mañana es el día más pintoresco.</div></div></div><div class="sep"></div><div class="tip-item"><div class="tip-icon">⛽</div><div class="tip-text"><strong>Sin parada de nafta.</strong> 380 km entra dentro de la autonomía de 318 km... esperar: cargar en Córdoba y tener tanque al tope. Siempre lleno al salir.</div></div></div></div>
+    <div><div class="card"><div class="card-title">📺 Videos recomendados — La Rioja</div><div class="video-grid"><div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=yagoxamerica+la+rioja+moto')"><div class="video-thumb" style="background:#0a1520;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center;font-size:1.8rem">🗺️</div></div><div class="video-info"><div class="video-channel">Yago x América</div><div class="video-title">La Rioja en moto — ruta y ciudad</div></div></div><div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=gino+valentini+la+rioja+catamarca')"><div class="video-thumb" style="background:#0a1520;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center;font-size:1.8rem">🇦🇷</div></div><div class="video-info"><div class="video-channel">Gino Valentini</div><div class="video-title">Turismo nacional La Rioja</div></div></div></div></div></div>
+  </div>
+</div>
+
+<div id="page-d3" class="page">
+  <div class="day-header"><div class="day-num-big">03</div><div class="day-info-main"><div class="day-title">La Rioja → Cuesta Miranda → Chilecito</div><div class="day-route">Dom 12/10 · 220 km · RN38 + Portezuelo + Miranda · Salida 08:00</div><div class="day-pills"><span class="pill badge-orange">Asfalto serrano</span><span class="pill badge-amber">3.2 hs conducción</span><span class="pill" style="background:#f5c84222;color:#f5c842;border:1px solid #f5c84244">Cuesta Miranda ★★★</span></div></div></div>
+    <div class="horario-bar">
+      <div class="hor-block">
+        <div class="hor-label">⏰ Salida</div>
+        <div class="hor-val">08:00</div>
+        <div class="hor-sub">hotel</div>
+      </div>
+      <div class="hor-block">
+        <div class="hor-label">🏁 Llegada</div>
+        <div class="hor-val">~14:00</div>
+        <div class="hor-sub">pernocte</div>
+      </div>
+      <div class="hor-block libre">
+        <div class="hor-label">🟢 Tiempo libre</div>
+        <div class="hor-val" style="color:#3ddba0">~5 hs</div>
+        <div class="hor-sub">estimado</div>
+      </div>
+    </div>
+    <div class="libre-banner" style="background:#00c97712;border-color:#00c97730">
+      <span class="libre-banner-icon">✅</span>
+      <div>
+        <div class="libre-banner-text" style="color:#3ddba0">~5 hs de tiempo libre</div>
+        <div class="libre-banner-sub">Tarde libre en Chilecito. Cable Carril histórico (gratis), plaza, cena antes de la gran excursión.</div>
+      </div>
+    </div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Detalle del día</div><div class="timeline"><div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title">08:00 — Salida La Rioja · Cargar lleno</div><div class="tl-sub">Ruta RN38 hacia el oeste. Empieza el paisaje serrano a los 30 min.</div></div><div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title">~09:00 — Cuesta del Portezuelo</div><div class="tl-sub">Primera cuesta serrana. Curvas abiertas, vistas panorámicas. Parar en el mirador.</div></div><div class="tl-item"><div class="tl-dot orange" style="background:#f5c842"></div><div class="tl-title">~11:00 — Cuesta de Miranda ★★★</div><div class="tl-sub">El tramo más fotogénico del viaje hasta este punto. Curvas rojas sobre cañadón. 45 min en el lugar. Cuidado con aceite en las curvas — hay ómnibus.</div></div><div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title">~14:00 — Chilecito</div><div class="tl-sub">Check-in. Visitar Cable Carril histórico (gratis, imperdible). Cena tranquila — mañana es la excursión más exigente.</div></div></div></div></div>
+    <div><div class="card"><div class="card-title">📺 Videos — Cuesta de Miranda</div><div class="video-grid"><div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=cuesta+de+miranda+la+rioja+moto')"><div class="video-thumb" style="background:#1a1000;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center;font-size:1.8rem">🌄</div></div><div class="video-info"><div class="video-channel">Varios canales</div><div class="video-title">Cuesta de Miranda en moto — las curvas rojas</div></div></div><div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=picantes+puna+ruta+40+chilecito')"><div class="video-thumb" style="background:#1a1000;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center;font-size:1.8rem">🌋</div></div><div class="video-info"><div class="video-channel">Picantes de la Puna</div><div class="video-title">RN40 La Rioja — Chilecito y la sierra riojana</div></div></div></div></div></div>
+  </div>
+</div>
+
+<div id="page-d4" class="page">
+  <div class="day-header"><div class="day-num-big">04</div><div class="day-info-main"><div class="day-title">Excursión Famatina — Mina La Mejicana</div><div class="day-route">Lun 13/10 · 130 km r/v · Ripio montaña · 4.600 msnm · Salida 07:00</div><div class="day-pills"><span class="pill badge-green">Ripio duro</span><span class="pill badge-amber">~9 hs totales</span><span class="pill" style="background:#f5c84222;color:#f5c842;border:1px solid #f5c84244">4.600 msnm</span></div></div></div>
+    <div class="horario-bar">
+      <div class="hor-block">
+        <div class="hor-label">⏰ Salida</div>
+        <div class="hor-val">07:00</div>
+        <div class="hor-sub">hotel</div>
+      </div>
+      <div class="hor-block">
+        <div class="hor-label">🏁 Llegada</div>
+        <div class="hor-val">~16:00</div>
+        <div class="hor-sub">pernocte</div>
+      </div>
+      <div class="hor-block libre">
+        <div class="hor-label">🟢 Tiempo libre</div>
+        <div class="hor-val" style="color:#3ddba0">~2 hs</div>
+        <div class="hor-sub">estimado</div>
+      </div>
+    </div>
+    <div class="libre-banner" style="background:#00c97712;border-color:#00c97730">
+      <span class="libre-banner-icon">✅</span>
+      <div>
+        <div class="libre-banner-text" style="color:#3ddba0">~2 hs de tiempo libre</div>
+        <div class="libre-banner-sub">Poco tiempo libre — excursión de 9 hs. Noche en Chilecito, cena tranquila y descanso.</div>
+      </div>
+    </div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Detalle del día</div><div class="timeline"><div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title">07:00 — Salida Chilecito · Nafta LLENA</div><div class="tl-sub">Cargar nafta lleno antes de salir. No hay estaciones en la subida.</div></div><div class="tl-item"><div class="tl-dot green"></div><div class="tl-title">Pueblo Famatina</div><div class="tl-sub">Inicio del ripio. La ruta sube 54 km de ripio de montaña. CF450 MT perfecta para esto.</div></div><div class="tl-item"><div class="tl-dot green" style="background:#f5c842"></div><div class="tl-title">Mina La Mejicana — 4.600 msnm</div><div class="tl-sub">Vista a los seismiles, glaciares y el filo de la cordillera. 3–4 hs en el lugar + fotos épicas. Llevar agua y comida.</div></div><div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title">Regreso a Chilecito</div><div class="tl-sub">Bajar con tiempo para llegar antes de que oscurezca. Cena merecida.</div></div></div><div class="sep"></div><div class="tip-item"><div class="tip-icon">⚠️</div><div class="tip-text"><strong>Ripio exigente.</strong> Hay vados (Vir Guidetti cruzó el río 45 veces en su video). Con CF450 MT es manejable. No apresurar la bajada.</div></div></div></div>
+    <div><div class="card"><div class="card-title">📺 Videos — Famatina y La Mejicana</div><div class="video-grid"><div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=virguidetti+famatina+mina+mejicana')"><div class="video-thumb" style="background:#0a1520;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center"><div style="font-size:1.5rem">🏍️</div><div style="font-size:.65rem;color:#ff4444;margin-top:3px">Vir Guidetti</div></div></div><div class="video-info"><div class="video-channel">Vir Guidetti ★ IMPERDIBLE</div><div class="video-title">Mina La Mejicana — cruzó el río 45 veces. El video más relevante para este día.</div></div></div><div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=famatina+moto+ripio+catamarca')"><div class="video-thumb" style="background:#0a1520;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center;font-size:1.8rem">⛰️</div></div><div class="video-info"><div class="video-channel">Varios</div><div class="video-title">Famatina en moto — ripio de montaña y paisajes de altura</div></div></div></div></div></div>
+  </div>
+</div>
+
+<div id="page-d5" class="page">
+  <div class="day-header"><div class="day-num-big">05</div><div class="day-info-main"><div class="day-title">Chilecito → Tinogasta</div><div class="day-route">Mar 14/10 · 140 km · RP11 Vieja Traza RN40 · Tarde libre con bodega</div><div class="day-pills"><span class="pill badge-orange">Asfalto bacheado</span><span class="pill badge-amber">2.1 hs conducción</span><span class="pill badge-blue">Tarde bodega ★</span></div></div></div>
+    <div class="horario-bar">
+      <div class="hor-block">
+        <div class="hor-label">⏰ Salida</div>
+        <div class="hor-val">09:00</div>
+        <div class="hor-sub">hotel</div>
+      </div>
+      <div class="hor-block">
+        <div class="hor-label">🏁 Llegada</div>
+        <div class="hor-val">~12:30</div>
+        <div class="hor-sub">pernocte</div>
+      </div>
+      <div class="hor-block libre">
+        <div class="hor-label">🟢 Tiempo libre</div>
+        <div class="hor-val" style="color:#3ddba0">~6 hs</div>
+        <div class="hor-sub">estimado</div>
+      </div>
+    </div>
+    <div class="libre-banner" style="background:#00c97712;border-color:#00c97730">
+      <span class="libre-banner-icon">✅</span>
+      <div>
+        <div class="libre-banner-text" style="color:#3ddba0">~6 hs de tiempo libre</div>
+        <div class="libre-banner-sub">Tarde completamente libre en Tinogasta. Ideal para visita a bodega. El día de menos km del tramo IDA.</div>
+      </div>
+    </div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Detalle del día</div><div class="timeline"><div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title">09:00 — Salida Chilecito · Cargar nafta lleno</div><div class="tl-sub">RP11 "Vieja Traza RN40". Tramo con baches pero paisaje desértico espectacular. Muy poca gente.</div></div><div class="tl-item"><div class="tl-dot teal"></div><div class="tl-title">~12:30 — Tinogasta · Check-in + almuerzo</div><div class="tl-sub">Hotel centro. Almuerzo en el pueblo. Tarde completamente libre.</div></div><div class="tl-item"><div class="tl-dot teal" style="background:#f5c842"></div><div class="tl-title">~15:00 — Bodega Don Ceferino / Alta Vista</div><div class="tl-sub">⭐ Esta es la noche ideal para la bodega — tarde libre, sin apuro, sin manejar después. Vinos de altura con vista al Pissis. Reservar la visita antes.</div></div><div class="tl-item"><div class="tl-dot gray"></div><div class="tl-title">~19:00 — Cena en Tinogasta</div><div class="tl-sub">Mañana solo 49 km hasta Fiambalá. Sin apuro. Descanso total.</div></div></div></div></div>
+    <div><div class="card"><div class="card-title">📺 Videos — Tinogasta y zona</div><div class="video-grid"><div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=tinogasta+moto+catamarca+bodegas')"><div class="video-thumb" style="background:#0a1520;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center;font-size:1.8rem">🍷</div></div><div class="video-info"><div class="video-channel">Varios</div><div class="video-title">Tinogasta — bodegas de altura y ruta del Adobe</div></div></div><div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=trailenando+catamarca+moto')"><div class="video-thumb" style="background:#0a1520;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center;font-size:1.8rem">🏔️</div></div><div class="video-info"><div class="video-channel">Trailenando</div><div class="video-title">Trail por Catamarca — zona Tinogasta y oeste</div></div></div></div></div></div>
+  </div>
+</div>
+
+<div id="page-d6" class="page">
+  <div class="day-header" style="border-color:#1a8fff44"><div class="day-num-big" style="color:#1a2d42">06</div><div class="day-info-main"><div class="day-title" style="color:#5ab4ff">Tinogasta → Fiambalá — Hotel Abaucan SPA ★★★★★</div><div class="day-route">Mié 15/10 · 49 km · RN60 Ruta del Adobe · Llegada al mediodía</div><div class="day-pills"><span class="pill badge-blue">Check-in Abaucan</span><span class="pill badge-amber">49 km solos</span><span class="pill" style="background:#00c97722;color:#3ddba0;border:1px solid #00c97744">Tarde en Finca Don Diego</span></div></div></div>
+    <div class="horario-bar">
+      <div class="hor-block">
+        <div class="hor-label">⏰ Salida</div>
+        <div class="hor-val">10:00</div>
+        <div class="hor-sub">hotel</div>
+      </div>
+      <div class="hor-block">
+        <div class="hor-label">🏁 Llegada</div>
+        <div class="hor-val">~12:00</div>
+        <div class="hor-sub">pernocte</div>
+      </div>
+      <div class="hor-block libre">
+        <div class="hor-label">🟢 Tiempo libre</div>
+        <div class="hor-val" style="color:#3ddba0">~5 hs tarde</div>
+        <div class="hor-sub">estimado</div>
+      </div>
+    </div>
+    <div class="libre-banner" style="background:#00c97712;border-color:#00c97730">
+      <span class="libre-banner-icon">✅</span>
+      <div>
+        <div class="libre-banner-text" style="color:#3ddba0">~5 hs tarde de tiempo libre</div>
+        <div class="libre-banner-sub">Llegada temprana a Fiambalá. Tarde libre: check-in SPA, piscina, Finca Don Diego.</div>
+      </div>
+    </div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Detalle del día</div><div class="timeline"><div class="tl-item"><div class="tl-dot blue"></div><div class="tl-title">10:00 — Salida Tinogasta · Nafta LLENA</div><div class="tl-sub">Cargar nafta al tope en Tinogasta. RN60 hacia el norte — asfalto nuevo, impecable.</div></div><div class="tl-item"><div class="tl-dot blue" style="background:#f5c842"></div><div class="tl-title">Ruta del Adobe — 49 km de paraíso</div><div class="tl-sub">Iglesias coloniales de adobe del siglo XVIII a ambos lados. Cada curva es una postal. Tomarse el tiempo — no apurar.</div></div><div class="tl-item"><div class="tl-dot blue"></div><div class="tl-title">~12:00 — Fiambalá · CHECK-IN ABAUCAN</div><div class="tl-sub">3 noches (15, 16, 17). Garage cerrado para las CF450 MT. Dejar equipaje y respirar.</div></div><div class="tl-item"><div class="tl-dot blue" style="background:#00c977"></div><div class="tl-title">~14:00 — Tarde libre · Finca Don Diego</div><div class="tl-sub">La bodega más alta de Fiambalá. Syrah y Malbec a 1.505 msnm. Visita + cata con reserva.</div></div></div><div class="sep"></div><div class="tip-item"><div class="tip-icon">📞</div><div class="tip-text"><strong>Abaucan SPA:</strong> (03837) 496-300. Confirmar llegada la noche anterior desde Tinogasta.</div></div></div></div>
+    <div><div class="card"><div class="card-title">📺 Videos — Ruta del Adobe y Fiambalá</div><div class="video-grid"><div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=virguidetti+fiambala+ruta+60+seismiles')"><div class="video-thumb" style="background:#0a1020;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center"><div style="font-size:1.5rem">🏍️</div><div style="font-size:.65rem;color:#5ab4ff;margin-top:3px">Vir Guidetti</div></div></div><div class="video-info"><div class="video-channel">Vir Guidetti ★ CLAVE</div><div class="video-title">RN60 Fiambalá — Ruta del Adobe y Seismiles</div></div></div><div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=picantes+puna+fiambala+catamarca')"><div class="video-thumb" style="background:#0a1020;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center;font-size:1.8rem">🌋</div></div><div class="video-info"><div class="video-channel">Picantes de la Puna</div><div class="video-title">Fiambalá — bodegas y vida local</div></div></div><div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=fiambala+catamarca+moto+travel')"><div class="video-thumb" style="background:#0a1020;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center;font-size:1.8rem">🌵</div></div><div class="video-info"><div class="video-channel">Varios canales</div><div class="video-title">Fiambalá — el pueblo del adobe y las termas</div></div></div></div></div></div>
+  </div>
+</div>
+
+<div id="page-d7" class="page">
+  <div class="day-header" style="border-color:#1a8fff44"><div class="day-num-big" style="color:#1a2d42">07</div><div class="day-info-main"><div class="day-title" style="color:#5ab4ff">Fiambalá → Seismiles / Balcón del Pissis</div><div class="day-route">Jue 16/10 · 200 km · TODO ASFALTO RN60 · Salida 07:00 · 4.700 msnm</div><div class="day-pills"><span class="pill badge-blue">Asfalto RN60</span><span class="pill" style="background:#f5c84222;color:#f5c842;border:1px solid #f5c84244">4.700 msnm</span><span class="pill badge-green">★★★★★</span></div></div></div>
+    <div class="horario-bar">
+      <div class="hor-block">
+        <div class="hor-label">⏰ Salida</div>
+        <div class="hor-val">07:00</div>
+        <div class="hor-sub">hotel</div>
+      </div>
+      <div class="hor-block">
+        <div class="hor-label">🏁 Llegada</div>
+        <div class="hor-val">~14:00</div>
+        <div class="hor-sub">pernocte</div>
+      </div>
+      <div class="hor-block libre">
+        <div class="hor-label">🟢 Tiempo libre</div>
+        <div class="hor-val" style="color:#3ddba0">~4 hs</div>
+        <div class="hor-sub">estimado</div>
+      </div>
+    </div>
+    <div class="libre-banner" style="background:#00c97712;border-color:#00c97730">
+      <span class="libre-banner-icon">✅</span>
+      <div>
+        <div class="libre-banner-text" style="color:#3ddba0">~4 hs de tiempo libre</div>
+        <div class="libre-banner-sub">Regreso a las 14hs. Tarde en el Abaucan: piscina, descanso, cena en el hotel.</div>
+      </div>
+    </div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Detalle del día</div><div class="timeline"><div class="tl-item"><div class="tl-dot blue"></div><div class="tl-title">07:00 — Salida Fiambalá · Nafta LLENA</div><div class="tl-sub">200 km de ida/vuelta. Todo asfalto en excelente estado. RN60 hacia el Paso San Francisco.</div></div><div class="tl-item"><div class="tl-dot blue" style="background:#f5c842"></div><div class="tl-title">Balcón del Pissis — 4.700 msnm</div><div class="tl-sub">Volcanes Pissis y Ojos del Salado a la vista. Lagunas de colores. El paisaje más épico hasta aquí. 2–3 hs en el lugar.</div></div><div class="tl-item"><div class="tl-dot blue"></div><div class="tl-title">Regreso a Fiambalá · Tarde en el hotel</div><div class="tl-sub">Piscina del Abaucan para recuperarse. Cena en el restaurante del hotel.</div></div></div><div class="sep"></div><div class="tip-item"><div class="tip-icon">🌡️</div><div class="tip-text"><strong>Temperatura en ruta.</strong> En el balcón puede bajar a 2°C aunque sea octubre. Llevar polar, nuchal y guantes de abrigo.</div></div><div class="tip-item"><div class="tip-icon">🥪</div><div class="tip-text"><strong>Llevar comida y agua.</strong> No hay nada en el camino. Pedir vianda en el hotel o comprar la noche anterior.</div></div></div></div>
+    <div><div class="card"><div class="card-title">📺 Videos — RN60 y Seismiles</div><div class="video-grid"><div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=virguidetti+ruta+60+seismiles+catamarca')"><div class="video-thumb" style="background:#0a1020;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center"><div style="font-size:1.5rem">🏍️</div><div style="font-size:.65rem;color:#5ab4ff;margin-top:3px">Vir Guidetti</div></div></div><div class="video-info"><div class="video-channel">Vir Guidetti ★★★</div><div class="video-title">RN60 Catamarca — camino de los Seismiles, video imprescindible</div></div></div><div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=balcon+del+pissis+catamarca+moto')"><div class="video-thumb" style="background:#0a1020;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center;font-size:1.8rem">🌋</div></div><div class="video-info"><div class="video-channel">Varios</div><div class="video-title">Balcón del Pissis — volcanes y lagunas en altura</div></div></div><div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=seba+adventure+puna+catamarca+moto')"><div class="video-thumb" style="background:#0a1020;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center;font-size:1.8rem">🛣️</div></div><div class="video-info"><div class="video-channel">Seba Adventure</div><div class="video-title">Puna catamarca — travesía por los Andes</div></div></div></div></div></div>
+  </div>
+</div>
+
+<div id="page-d8" class="page">
+  <div class="day-header" style="border-color:#1a8fff44"><div class="day-num-big" style="color:#1a2d42">08</div><div class="day-info-main"><div class="day-title" style="color:#5ab4ff">Fiambalá — Dunas Tatón + Termas</div><div class="day-route">Vie 17/10 · 60 km · Último día Abaucan · Checkout mañana 10:00 AM</div><div class="day-pills"><span class="pill badge-blue">Relax total</span><span class="pill" style="background:#f5c84222;color:#f5c842;border:1px solid #f5c84244">Sandboard ★★★</span><span class="pill badge-red">Checkout 18/10 10am</span></div></div></div>
+    <div class="horario-bar">
+      <div class="hor-block">
+        <div class="hor-label">⏰ Salida</div>
+        <div class="hor-val">09:00</div>
+        <div class="hor-sub">hotel</div>
+      </div>
+      <div class="hor-block">
+        <div class="hor-label">🏁 Llegada</div>
+        <div class="hor-val">~18:00</div>
+        <div class="hor-sub">pernocte</div>
+      </div>
+      <div class="hor-block ">
+        <div class="hor-label">🟢 Tiempo libre</div>
+        <div class="hor-val" style="color:#e27a7a">0 hs</div>
+        <div class="hor-sub">estimado</div>
+      </div>
+    </div>
+    <div class="libre-banner" style="background:#e24b4a12;border-color:#e24b4a30">
+      <span class="libre-banner-icon">📅</span>
+      <div>
+        <div class="libre-banner-text" style="color:#e27a7a">0 hs de tiempo libre</div>
+        <div class="libre-banner-sub">Día de actividades (Tatón + Termas). No hay tiempo libre — el día entero está ocupado. Checkout mañana.</div>
+      </div>
+    </div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Detalle del día</div><div class="timeline"><div class="tl-item"><div class="tl-dot blue"></div><div class="tl-title">09:00 — Dunas de Tatón</div><div class="tl-sub">30 km de ripio desde Fiambalá. Arena rojiza de 100m de altura. Sandboard (llevar tabla o alquilar ahí). 2–3 hs en las dunas.</div></div><div class="tl-item"><div class="tl-dot blue" style="background:#00c977"></div><div class="tl-title">~14:00 — Termas de Fiambalá</div><div class="tl-sub">7 km del centro, asfalto. Piscinas termales escalonadas en la montaña. Atardecer épico. ~$5.000 entrada.</div></div><div class="tl-item"><div class="tl-dot blue"></div><div class="tl-title">Noche — Hotel Abaucan · Última cena</div><div class="tl-sub">Dejar mochilas organizadas. Checkout mañana 18/10 a las 10:00 AM. Luego rumbo a Belén.</div></div></div><div class="sep"></div><div class="tip-item"><div class="tip-icon">🧳</div><div class="tip-text"><strong>La noche antes.</strong> Dejar bolsos organizados para el checkout. Se puede dejar equipaje en recepción y salir a Tatón desde temprano sin apuro.</div></div></div></div>
+    <div><div class="card"><div class="card-title">📺 Videos — Dunas Tatón y Termas</div><div class="video-grid"><div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=dunas+taton+fiambala+moto+catamarca')"><div class="video-thumb" style="background:#1a1000;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center;font-size:1.8rem">🏜️</div></div><div class="video-info"><div class="video-channel">Varios canales</div><div class="video-title">Dunas de Tatón — sandboard en Fiambalá</div></div></div><div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=termas+fiambala+catamarca')"><div class="video-thumb" style="background:#1a1000;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center;font-size:1.8rem">♨️</div></div><div class="video-info"><div class="video-channel">Varios</div><div class="video-title">Termas de Fiambalá — piscinas en la montaña</div></div></div><div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=picantes+puna+fiambala+termas')"><div class="video-thumb" style="background:#1a1000;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center;font-size:1.8rem">🌋</div></div><div class="video-info"><div class="video-channel">Picantes de la Puna</div><div class="video-title">Fiambalá y sus termas — viaje en Benelli</div></div></div></div></div></div>
+  </div>
+</div>
+
+<div id="page-d9" class="page">
+  <div class="day-header"><div class="day-num-big">09</div><div class="day-info-main"><div class="day-title">Checkout 10am → Belén · Shaquil · Shincal</div><div class="day-route">Sáb 18/10 · 210 km · RN40 + RP4 · Salida 10:00 AM tras checkout</div><div class="day-pills"><span class="pill badge-orange">Asfalto</span><span class="pill badge-amber">2.7 hs conducción</span><span class="pill" style="background:#9b59b622;color:#c39bd3;border:1px solid #9b59b644">Ruinas Inca Shincal</span></div></div></div>
+    <div class="horario-bar">
+      <div class="hor-block">
+        <div class="hor-label">⏰ Salida</div>
+        <div class="hor-val">10:00</div>
+        <div class="hor-sub">hotel</div>
+      </div>
+      <div class="hor-block">
+        <div class="hor-label">🏁 Llegada</div>
+        <div class="hor-val">~17:00</div>
+        <div class="hor-sub">pernocte</div>
+      </div>
+      <div class="hor-block libre">
+        <div class="hor-label">🟢 Tiempo libre</div>
+        <div class="hor-val" style="color:#3ddba0">~2 hs</div>
+        <div class="hor-sub">estimado</div>
+      </div>
+    </div>
+    <div class="libre-banner" style="background:#00c97712;border-color:#00c97730">
+      <span class="libre-banner-icon">✅</span>
+      <div>
+        <div class="libre-banner-text" style="color:#3ddba0">~2 hs de tiempo libre</div>
+        <div class="libre-banner-sub">Checkout 10am. Llegada a Belén con tiempo para recorrer el mercado artesanal antes de cenar.</div>
+      </div>
+    </div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Detalle del día</div><div class="timeline"><div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title">10:00 — Checkout Abaucan</div><div class="tl-sub">Desayuno temprano. Cargar nafta en Tinogasta (50 km, única estación confiable antes de Belén).</div></div><div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title">~14:30 — Belén · Almuerzo + mercado</div><div class="tl-sub">Mercado artesanal — ponchos de vicuña, alfombras, los mejores tejidos del NOA. Llevar efectivo.</div></div><div class="tl-item"><div class="tl-dot orange" style="background:#9b59b6"></div><div class="tl-title">~16:30 — Castillos de Shaquil + Shincal</div><div class="tl-sub">Formaciones rocosas únicas. Ruinas Inca del Shincal a 6 km de Londres — centro administrativo inca más importante de Argentina. Entrada ~$3.000.</div></div></div><div class="sep"></div><div class="tip-item"><div class="tip-icon">💵</div><div class="tip-text"><strong>Llevar EFECTIVO.</strong> Belén tiene bancos pero muchos locales del mercado artesanal no aceptan tarjeta.</div></div></div></div>
+    <div><div class="card"><div class="card-title">📺 Videos — Belén y Shincal</div><div class="video-grid"><div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=belen+catamarca+moto+shincal')"><div class="video-thumb" style="background:#0a1520;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center;font-size:1.8rem">🏺</div></div><div class="video-info"><div class="video-channel">Varios</div><div class="video-title">Belén y Ruinas del Shincal — historia inca en Catamarca</div></div></div><div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=yagoxamerica+catamarca+belen+moto')"><div class="video-thumb" style="background:#0a1520;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center;font-size:1.8rem">🗺️</div></div><div class="video-info"><div class="video-channel">Yago x América</div><div class="video-title">NOA en moto — Belén y zona catamarca</div></div></div></div></div></div>
+  </div>
+</div>
+
+<div id="page-d10" class="page">
+  <div class="day-header" style="border-color:#00c97744"><div class="day-num-big" style="color:#0d2a1a">10</div><div class="day-info-main"><div class="day-title" style="color:#3ddba0">Campo de Piedra Pómez ★★★★★</div><div class="day-route">Dom 19/10 · 280 km · RIPIO RP43 · Salida 07:00 · 3.500 msnm</div><div class="day-pills"><span class="pill badge-green">Ripio RP43</span><span class="pill" style="background:#f5c84222;color:#f5c842;border:1px solid #f5c84244">3.500 msnm</span><span class="pill badge-green">EL MÁS ÉPICO</span></div></div></div>
+    <div class="horario-bar">
+      <div class="hor-block">
+        <div class="hor-label">⏰ Salida</div>
+        <div class="hor-val">07:00</div>
+        <div class="hor-sub">hotel</div>
+      </div>
+      <div class="hor-block">
+        <div class="hor-label">🏁 Llegada</div>
+        <div class="hor-val">~17:30</div>
+        <div class="hor-sub">pernocte</div>
+      </div>
+      <div class="hor-block ">
+        <div class="hor-label">🟢 Tiempo libre</div>
+        <div class="hor-val" style="color:#f5c842">~1 hs</div>
+        <div class="hor-sub">estimado</div>
+      </div>
+    </div>
+    <div class="libre-banner" style="background:#f5c84212;border-color:#f5c84230">
+      <span class="libre-banner-icon">⏳</span>
+      <div>
+        <div class="libre-banner-text" style="color:#f5c842">~1 hs de tiempo libre</div>
+        <div class="libre-banner-sub">Día muy largo de ripio. Llegada a Antofagasta entrada la tarde. Solo tiempo para cenar y dormir.</div>
+      </div>
+    </div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Detalle del día</div><div class="timeline"><div class="tl-item"><div class="tl-dot green"></div><div class="tl-title">07:00 — Salida Belén · Nafta LLENA</div><div class="tl-sub">Cargar lleno en Belén — última estación antes del campo. No hay nafta en RP43.</div></div><div class="tl-item"><div class="tl-dot green"></div><div class="tl-title">El Peñón — parada opcional</div><div class="tl-sub">Cargar si hay nafta disponible. Base para el desvío al Campo Pómez.</div></div><div class="tl-item"><div class="tl-dot green" style="background:#f5c842"></div><div class="tl-title">Campo de Piedra Pómez — otro planeta</div><div class="tl-sub">Mar de ignimbritas blancas y negras. Crestas volcánicas de 3–5 m. 3 hs de caminata mínimo. El mejor atardecer del viaje.</div></div><div class="tl-item"><div class="tl-dot green"></div><div class="tl-title">Antofagasta de la Sierra · Pernocte</div><div class="tl-sub">Hostería Puerta del Sol. Llamar antes de salir de Belén para confirmar. Única opción.</div></div></div><div class="sep"></div><div class="tip-item"><div class="tip-icon">👨‍🦯</div><div class="tip-text"><strong>Guía local recomendado.</strong> Miguel Ramos +549 3834 1035. Muchas huellas en el campo — fácil perderse. Muy recomendable contratarlo.</div></div></div></div>
+    <div><div class="card"><div class="card-title">📺 Videos — Campo Pómez y RP43</div><div class="video-grid"><div class="video-card" onclick="openYT('https://www.youtube.com/watch?v=5jmr0rUaIjg')"><div class="video-thumb" style="background:#0d2010;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center"><div style="font-size:1.5rem">⬜</div><div style="font-size:.65rem;color:#3ddba0;margin-top:3px">Puna Argentina</div></div></div><div class="video-info"><div class="video-channel">Paisajes de otro planeta ★★★★★</div><div class="video-title">Cono de Arita + Campo Pómez + Puna — video imprescindible</div></div></div><div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=campo+piedra+pomez+catamarca+moto')"><div class="video-thumb" style="background:#0d2010;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center;font-size:1.8rem">🌋</div></div><div class="video-info"><div class="video-channel">Varios canales</div><div class="video-title">Campo de Piedra Pómez — caminata y formaciones volcánicas</div></div></div><div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=trailenando+puna+catamarca+antofagasta')"><div class="video-thumb" style="background:#0d2010;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center;font-size:1.8rem">🏔️</div></div><div class="video-info"><div class="video-channel">Trailenando</div><div class="video-title">Puna catamarca trail — RP43 y Antofagasta S.</div></div></div></div></div></div>
+  </div>
+</div>
+
+<div id="page-d11" class="page">
+  <div class="day-header" style="border-color:#00c97744"><div class="day-num-big" style="color:#0d2a1a">11</div><div class="day-info-main"><div class="day-title" style="color:#3ddba0">CONO DE ARITA ★★★★★ — Salar de Arizaro</div><div class="day-route">Lun 20/10 · 350 km · RN51 + ripio salar · Salida 07:00 · 3.690 msnm</div><div class="day-pills"><span class="pill badge-green">RN51 + salar</span><span class="pill" style="background:#f5c84222;color:#f5c842;border:1px solid #f5c84244">3.690 msnm</span><span class="pill badge-amber">Bidón 5L</span></div></div></div>
+    <div class="horario-bar">
+      <div class="hor-block">
+        <div class="hor-label">⏰ Salida</div>
+        <div class="hor-val">07:00</div>
+        <div class="hor-sub">hotel</div>
+      </div>
+      <div class="hor-block">
+        <div class="hor-label">🏁 Llegada</div>
+        <div class="hor-val">~20:00</div>
+        <div class="hor-sub">pernocte</div>
+      </div>
+      <div class="hor-block ">
+        <div class="hor-label">🟢 Tiempo libre</div>
+        <div class="hor-val" style="color:#e27a7a">0 hs</div>
+        <div class="hor-sub">estimado</div>
+      </div>
+    </div>
+    <div class="libre-banner" style="background:#e24b4a12;border-color:#e24b4a30">
+      <span class="libre-banner-icon">📅</span>
+      <div>
+        <div class="libre-banner-text" style="color:#e27a7a">0 hs de tiempo libre</div>
+        <div class="libre-banner-sub">El día más largo. 350 km incluyendo salar. Llegar a Tolar Grande entrada la noche. Noche de estrellas.</div>
+      </div>
+    </div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Detalle del día</div><div class="timeline"><div class="tl-item"><div class="tl-dot green"></div><div class="tl-title">07:00 — Salida Antofagasta → RN51</div><div class="tl-sub">Dirección San Antonio de los Cobres por RN51 asfaltada.</div></div><div class="tl-item"><div class="tl-dot green"></div><div class="tl-title">Tolar Grande — CARGA OBLIGATORIA</div><div class="tl-sub">Cargar nafta al máximo + bidón 5L. No hay estación en el salar. CRÍTICO.</div></div><div class="tl-item"><div class="tl-dot green" style="background:#f5c842"></div><div class="tl-title">CONO DE ARITA — 80 km ripio salar</div><div class="tl-sub">Pirámide volcánica perfecta de 200m de alto. El 3er salar más grande del continente. Silencio total. Llevar la tarde para el atardecer — el cono mira al ESTE.</div></div><div class="tl-item"><div class="tl-dot green"></div><div class="tl-title">Regreso Tolar Grande · Pernocte</div><div class="tl-sub">Hostería Municipal. Muy básico. Noche de estrellas sin contaminación lumínica.</div></div></div><div class="sep"></div><div class="tip-item"><div class="tip-icon">⚠️</div><div class="tip-text"><strong>Salar exigente.</strong> Superficie irregular. Vel máx 40 km/h. Bajar presión neumáticos a 1.7 bar. Sin señal celular. Ir siempre de a 2 motos (ya son 2).</div></div></div></div>
+    <div><div class="card"><div class="card-title">📺 Videos — Cono de Arita y Salar</div><div class="video-grid"><div class="video-card" onclick="openYT('https://www.youtube.com/watch?v=5jmr0rUaIjg')"><div class="video-thumb" style="background:#0d2010;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center"><div style="font-size:1.5rem">🔺</div><div style="font-size:.65rem;color:#f5c842;margin-top:3px">Cono Arita</div></div></div><div class="video-info"><div class="video-channel">Paisajes de otro planeta ★★★★★</div><div class="video-title">Cono de Arita y Salar de Arizaro — el video</div></div></div><div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=cono+arita+salar+arizaro+moto')"><div class="video-thumb" style="background:#0d2010;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center;font-size:1.8rem">🤍</div></div><div class="video-info"><div class="video-channel">Varios</div><div class="video-title">Salar de Arizaro en moto — travesía por el salar</div></div></div><div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=pablo+imhoff+puna+salar+moto')"><div class="video-thumb" style="background:#0d2010;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center;font-size:1.8rem">🌎</div></div><div class="video-info"><div class="video-channel">Pablo Imhoff</div><div class="video-title">Puna y Pablito Viajero — la ruta de los salares</div></div></div></div></div></div>
+  </div>
+</div>
+
+<div id="page-d12" class="page">
+  <div class="day-header"><div class="day-num-big">12</div><div class="day-info-main"><div class="day-title">Tolar Grande → Belén → Catamarca capital</div><div class="day-route">Mar 21/10 · 340 km · RN27+RN51+RN40 · Salida 06:00 · Día largo</div><div class="day-pills"><span class="pill badge-orange">Asfalto largo</span><span class="pill badge-amber">5.2 hs conducción</span><span class="pill badge-red">Salir 06:00 AM</span></div></div></div>
+    <div class="horario-bar">
+      <div class="hor-block">
+        <div class="hor-label">⏰ Salida</div>
+        <div class="hor-val">06:00</div>
+        <div class="hor-sub">hotel</div>
+      </div>
+      <div class="hor-block">
+        <div class="hor-label">🏁 Llegada</div>
+        <div class="hor-val">~18:00</div>
+        <div class="hor-sub">pernocte</div>
+      </div>
+      <div class="hor-block ">
+        <div class="hor-label">🟢 Tiempo libre</div>
+        <div class="hor-val" style="color:#f5c842">~1 hs</div>
+        <div class="hor-sub">estimado</div>
+      </div>
+    </div>
+    <div class="libre-banner" style="background:#f5c84212;border-color:#f5c84230">
+      <span class="libre-banner-icon">⏳</span>
+      <div>
+        <div class="libre-banner-text" style="color:#f5c842">~1 hs de tiempo libre</div>
+        <div class="libre-banner-sub">Día largo de regreso. Llegada a Catamarca capital con tiempo justo para cenar y preparar bolsos.</div>
+      </div>
+    </div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Detalle del día</div><div class="timeline"><div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title">06:00 — Salida Tolar Grande</div><div class="tl-sub">Día más largo del regreso. Salir con luz. RN27 → RN51 → RN40.</div></div><div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title">Belén — parada nafta y almuerzo</div><div class="tl-sub">Carga de nafta obligatoria en Belén. Última empanada de la panadería del centro.</div></div><div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title">~18:00 — San Fernando del Valle</div><div class="tl-sub">Catamarca capital. Hotel Amérian Park. Cena y descanso. Mañana libre antes del vuelo.</div></div></div><div class="sep"></div><div class="tip-item"><div class="tip-icon">🏍️</div><div class="tip-text"><strong>Entregar motos.</strong> Coordinar con el servicio de camión mosquito antes del viaje para el punto de entrega en Catamarca capital.</div></div></div></div>
+    <div><div class="card"><div class="card-title">📺 Videos — regreso por la puna</div><div class="video-grid"><div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=yagoxamerica+puna+catamarca+regreso')"><div class="video-thumb" style="background:#0a1520;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center;font-size:1.8rem">🗺️</div></div><div class="video-info"><div class="video-channel">Yago x América</div><div class="video-title">Vuelta por la puna — RN27 y RN40 catamarca</div></div></div><div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=catamarca+capital+san+fernando+del+valle')"><div class="video-thumb" style="background:#0a1520;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center;font-size:1.8rem">🏙️</div></div><div class="video-info"><div class="video-channel">Varios</div><div class="video-title">Catamarca capital — la ciudad antes del vuelo</div></div></div></div></div></div>
+  </div>
+</div>
+
+<div id="page-d13" class="page">
+  <div class="day-header" style="border-color:#f5c84244"><div class="day-num-big" style="color:#2a1a00">13</div><div class="day-info-main"><div class="day-title" style="color:#f5c842">✈️ VUELO A CASA — CTC 19:35</div><div class="day-route">Jue 23/10 · Catamarca → Aeroparque · Entrega motos · Vuelo 19:35</div><div class="day-pills"><span class="pill badge-amber">Entrega CF450 MT</span><span class="pill" style="background:#9b59b622;color:#c39bd3;border:1px solid #9b59b644">CTC 19:35 → AEP ~21:00</span></div></div></div>
+    <div class="horario-bar">
+      <div class="hor-block">
+        <div class="hor-label">⏰ Salida</div>
+        <div class="hor-val">—</div>
+        <div class="hor-sub">hotel</div>
+      </div>
+      <div class="hor-block">
+        <div class="hor-label">🏁 Llegada</div>
+        <div class="hor-val">19:35 ✈️</div>
+        <div class="hor-sub">pernocte</div>
+      </div>
+      <div class="hor-block libre">
+        <div class="hor-label">🟢 Tiempo libre</div>
+        <div class="hor-val" style="color:#3ddba0">~toda la mañana</div>
+        <div class="hor-sub">estimado</div>
+      </div>
+    </div>
+    <div class="libre-banner" style="background:#00c97712;border-color:#00c97730">
+      <span class="libre-banner-icon">✅</span>
+      <div>
+        <div class="libre-banner-text" style="color:#3ddba0">~toda la mañana de tiempo libre</div>
+        <div class="libre-banner-sub">Mañana completamente libre en Catamarca capital antes del vuelo. Entrega motos + aeropuerto 17:30.</div>
+      </div>
+    </div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Logística del día final</div><div class="timeline"><div class="tl-item"><div class="tl-dot gray"></div><div class="tl-title">Mañana libre en Catamarca</div><div class="tl-sub">Desayuno tranquilo. Visitar la Catedral o el Museo Adán Quiroga si hay ganas. Sin apuro.</div></div><div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title">Entrega CF450 MT — Camión Mosquito</div><div class="tl-sub">Punto de entrega a coordinar antes del viaje. Las motos viajan a CABA en el camión. Sin costo de traslado.</div></div><div class="tl-item"><div class="tl-dot orange" style="background:#f5c842"></div><div class="tl-title">17:30 — Aeropuerto CTC</div><div class="tl-sub">Aeropuerto Coronel Felipe Varela. 12 km del centro. Llegar 2 hs antes del vuelo. Check-in equipaje.</div></div><div class="tl-item"><div class="tl-dot orange" style="background:#9b59b6"></div><div class="tl-title">19:35 — Vuelo CTC → AEP</div><div class="tl-sub">Aerolíneas Argentinas. Llegada Aeroparque ~21:00. Fin del viaje más épico de la vida.</div></div></div></div></div>
+    <div><div class="card"><div class="card-title">Info vuelo</div><div style="background:#0d1e35;border:1px solid #f5c84244;border-radius:8px;padding:1rem;margin-bottom:.8rem"><div style="font-size:.7rem;color:#f5c84266;font-weight:700;letter-spacing:.06em;margin-bottom:6px">VUELO DE REGRESO</div><div style="font-size:1.3rem;font-weight:700;color:#f0f6ff">CTC → AEP</div><div style="font-size:.78rem;color:#8ab0cc;margin-top:4px">Jue 23/10 · 19:35 → ~21:00</div><div style="font-size:.7rem;color:#5a7a96;margin-top:6px">Aerolíneas Argentinas<br>Aeropuerto Coronel Felipe Varela (CTC)<br>Llegada Aeroparque Buenos Aires</div><div style="font-size:.7rem;color:#f5c842;margin-top:8px;font-weight:600">⚠️ Reservar con antelación — frecuencia limitada en oct.</div></div><div class="tip-item"><div class="tip-icon">🎒</div><div class="tip-text"><strong>Equipaje motos vs vuelo.</strong> Lo que va en el avión lo preparás la noche anterior. Lo que va en el camión (bolsos de moto) se entrega con las motos.</div></div><div class="tip-item"><div class="tip-icon">📱</div><div class="tip-text"><strong>Check-in online.</strong> Hacer check-in web de Aerolíneas 24–48 hs antes para elegir asiento y evitar colas.</div></div></div></div>
+  </div>
+</div>
+
+<!-- ==================== MAPAS ==================== -->
+<div id="page-mapas" class="page">
+  <div class="map-tabs">
+    <button class="map-tab active" onclick="switchMap('all',this)">Todo el viaje</button>
+    <button class="map-tab" onclick="switchMap('larioja',this)">La Rioja</button>
+    <button class="map-tab" onclick="switchMap('fiambala',this)">Fiambalá</button>
+    <button class="map-tab" onclick="switchMap('pomez',this)">Campo Pómez</button>
+    <button class="map-tab" onclick="switchMap('arita',this)">Cono de Arita</button>
+    <button class="map-tab" onclick="switchMap('belen',this)">Belén</button>
+    <button class="map-tab" onclick="switchMap('catamarca',this)">San Fernando del Valle</button>
+  </div>
+  <div id="map-container" class="map-frame">
+    <iframe id="map-iframe" width="100%" height="100%" style="border:0" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3000000!2d-67!3d-27!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1ses!2sar!4v1"></iframe>
+  </div>
+  <div class="g3" style="margin-top:1rem">
+    <div class="card" style="cursor:pointer" onclick="switchMap('fiambala',document.querySelector('.map-tab:nth-child(3)'))">
+      <div class="card-title">🌵 Fiambalá + Termas</div>
+      <p>Hotel Abaucan SPA, Dunas Tatón, Termas, Finca Don Diego, Ruta del Adobe RN60</p>
+    </div>
+    <div class="card" style="cursor:pointer" onclick="switchMap('pomez',document.querySelector('.map-tab:nth-child(4)'))">
+      <div class="card-title">⬜ Campo de Piedra Pómez</div>
+      <p>RP43 desde Belén, El Peñón, Campo Pómez 3.500 msnm, Antofagasta de la Sierra</p>
+    </div>
+    <div class="card" style="cursor:pointer" onclick="switchMap('arita',document.querySelector('.map-tab:nth-child(5)'))">
+      <div class="card-title">🔺 Cono de Arita — Salar</div>
+      <p>Tolar Grande, Salar de Arizaro, Cono de Arita 3.690 msnm, San Antonio de los Cobres</p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== TIPS ==================== -->
+<div id="page-tips" class="page">
+  <div class="g2">
+    <div>
+      <div class="card">
+        <div class="card-title">🏍️ CF450 MT — Consejos específicos</div>
+        <div class="tip-item"><div class="tip-icon">⛽</div><div class="tip-text"><strong>Siempre al tope.</strong> En el norte argentino las distancias entre estaciones son reales. Cargar lleno en cada ciudad — nunca salir sin hacerlo.</div></div>
+        <div class="tip-item"><div class="tip-icon">🔧</div><div class="tip-text"><strong>Service antes de salir.</strong> Aceite, cadena, filtros, neumáticos nuevos. La CF450 MT aguanta todo pero no escatimar en el servicio previo.</div></div>
+        <div class="tip-item"><div class="tip-icon">🏜️</div><div class="tip-text"><strong>Ripio RP43.</strong> Velocidad 50 km/h. Evitar piedras sueltas. La moto puede pero no apurar — el cansancio en ripio es el doble.</div></div>
+        <div class="tip-item"><div class="tip-icon">🌊</div><div class="tip-text"><strong>Presión neumáticos para el salar.</strong> Bajar a 1.7 bar antes de entrar al Salar de Arizaro. Subir al terminar. Llevar inflador o compresor de mano.</div></div>
+        <div class="tip-item"><div class="tip-icon">💧</div><div class="tip-text"><strong>Radiador.</strong> En las subidas de altura el motor trabaja más. Verificar nivel de refrigerante antes de salir. En la puna hace frío pero el motor se esfuerza.</div></div>
+        <div class="tip-item"><div class="tip-icon">📡</div><div class="tip-text"><strong>GPS offline.</strong> Maps.me + Wikiloc con tracks de RP43 y Salar descargados ANTES de salir de Buenos Aires. Sin señal en toda la puna.</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">🕐 Horas totales del viaje</div>
+        <table>
+          <thead><tr><th>Concepto</th><th>Horas</th></tr></thead>
+          <tbody>
+            <tr><td>Conducción total estimada</td><td>~52 hs</td></tr>
+            <tr><td>Descansos en ruta (30min/2hs)</td><td>~9 hs</td></tr>
+            <tr><td>Almuerzos en ruta</td><td>~12 hs</td></tr>
+            <tr><td>Excursiones a pie (Famatina, Pómez, Arita)</td><td>~18 hs</td></tr>
+            <tr><td>Actividades (Tatón, Termas, Shincal)</td><td>~12 hs</td></tr>
+            <tr><td style="color:#3ddba0;font-weight:600">TOTAL estimado</td><td style="color:#3ddba0;font-weight:600">~103 hs</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-title">⛰️ Altura — qué esperar y cómo manejarlo</div>
+        <div class="tip-item"><div class="tip-icon">😮‍💨</div><div class="tip-text"><strong>Apunamiento (soroche).</strong> Puede aparecer desde los 3.000 msnm. Síntomas: dolor de cabeza, náuseas, cansancio extremo. No es vergüenza — le pasa a todos.</div></div>
+        <div class="tip-item"><div class="tip-icon">💊</div><div class="tip-text"><strong>Acetazolamida (Diamox).</strong> Hablar con un médico antes del viaje. Tomarla 24hs antes de subir ayuda mucho. Llevar ibuprofeno para el dolor de cabeza.</div></div>
+        <div class="tip-item"><div class="tip-icon">🐢</div><div class="tip-text"><strong>Moverse despacio.</strong> Los primeros 30 min en altura, no apurarse. Caminar lento, respirar profundo. El cuerpo se adapta pero necesita tiempo.</div></div>
+        <div class="tip-item"><div class="tip-icon">🍵</div><div class="tip-text"><strong>Mate de coca.</strong> En cualquier pueblo de la puna lo ofrecen. Masticar hoja de coca es legal y realmente ayuda con la adaptación a la altura.</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">🧳 Equipamiento y ropa</div>
+        <div class="tip-item"><div class="tip-icon">🧥</div><div class="tip-text"><strong>Ropa de abrigo.</strong> En Seismiles y el salar baja a 2°C aunque sea octubre primavera. Polar, nuchal, guantes de abrigo. Capas.</div></div>
+        <div class="tip-item"><div class="tip-icon">☀️</div><div class="tip-text"><strong>Protector solar FPS 50+.</strong> La altura + sol del norte destruye la piel. Aplicar antes de salir, incluso nublado. Gafas de sol también.</div></div>
+        <div class="tip-item"><div class="tip-icon">💧</div><div class="tip-text"><strong>Agua.</strong> Mínimo 2L por persona en el bolso o mochila. En la puna se deshidrata rápido y no siempre hay donde comprar.</div></div>
+        <div class="tip-item"><div class="tip-icon">🔦</div><div class="tip-text"><strong>Linterna frontal.</strong> Para los pernoctes en pueblos pequeños y si hay corte de luz (frecuente en la puna).</div></div>
+        <div class="tip-item"><div class="tip-icon">📵</div><div class="tip-text"><strong>Sin señal celular.</strong> Desde el día 10 hasta el 12, prácticamente sin cobertura. Avisar a familia antes de entrar a la puna.</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">📺 Canales para ver ANTES del viaje</div>
+        <div class="yt-grid">
+          <div class="yt-card" onclick="openYT('https://www.youtube.com/@virguidetti/videos')"><div class="yt-avatar">🏍️</div><div class="yt-name">Vir Guidetti</div><div class="yt-desc">RN60, Famatina, NOA completo</div></div>
+          <div class="yt-card" onclick="openYT('https://www.youtube.com/@PabloImhoff')"><div class="yt-avatar">🌎</div><div class="yt-name">Pablo Imhoff</div><div class="yt-desc">Puna, NOA, Ushuaia→Alaska</div></div>
+          <div class="yt-card" onclick="openYT('https://www.youtube.com/@yagoxamerica')"><div class="yt-avatar">🗺️</div><div class="yt-name">Yago x América</div><div class="yt-desc">20 países, puna argentina</div></div>
+          <div class="yt-card" onclick="openYT('https://www.youtube.com/results?search_query=los+picantes+de+la+puna+catamarca')"><div class="yt-avatar">🌋</div><div class="yt-name">Picantes de la Puna</div><div class="yt-desc">Benelli, RN40, Catamarca</div></div>
+          <div class="yt-card" onclick="openYT('https://www.youtube.com/c/GinoValentiniEnMotoporArgentina')"><div class="yt-avatar">🇦🇷</div><div class="yt-name">Gino Valentini</div><div class="yt-desc">Argentina nómade</div></div>
+          <div class="yt-card" onclick="openYT('https://www.youtube.com/results?search_query=seba+adventure+moto+argentina')"><div class="yt-avatar">🛣️</div><div class="yt-name">Seba Adventure</div><div class="yt-desc">125.000km América</div></div>
+          <div class="yt-card" onclick="openYT('https://www.youtube.com/results?search_query=trailenando+catamarca+ripio')"><div class="yt-avatar">🏔️</div><div class="yt-name">Trailenando</div><div class="yt-desc">Trail y ripio argentino</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  const tabs = document.querySelectorAll('.tab');
+  const map = {
+    'generalidades':0,'comer':1,'pernocte':2,
+    'd1':3,'d2':4,'d3':5,'d4':6,'d5':7,'d6':8,'d7':9,'d8':10,
+    'd9':11,'d10':12,'d11':13,'d12':14,'d13':15,
+    'mapas':16,'tips':17
+  };
+  if(map[id] !== undefined) tabs[map[id]].classList.add('active');
+}
+
+const mapSrcs = {
+  all: 'https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3000000!2d-67!3d-27!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1ses!2sar!4v1',
+  larioja: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d200000!2d-67.5!3d-29.2!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1ses!2sar!4v1',
+  fiambala: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d50000!2d-67.62!3d-27.69!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1ses!2sar!4v1',
+  pomez: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d80000!2d-67.52!3d-26.37!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1ses!2sar!4v1',
+  arita: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d80000!2d-67.73!3d-25.0!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1ses!2sar!4v1',
+  belen: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d50000!2d-67.03!3d-27.65!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1ses!2sar!4v1',
+  catamarca: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d50000!2d-65.79!3d-28.47!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1ses!2sar!4v1'
+};
+
+function switchMap(key, btn) {
+  document.querySelectorAll('.map-tab').forEach(t => t.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  document.getElementById('map-iframe').src = mapSrcs[key] || mapSrcs.all;
+}
+
+function openYT(url) {
+  window.open(url, '_blank');
+}
+</script>
+</body>
+</html>
