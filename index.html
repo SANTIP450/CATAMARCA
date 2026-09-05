@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catamarca en Moto 2026</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0d1b2a;color:#d0dde8;min-height:100vh;font-size:14px}
+.topbar{background:#060f18;border-bottom:1px solid #1a2d42;padding:0;display:flex;align-items:stretch;overflow-x:auto;position:sticky;top:0;z-index:100}
+.brand{padding:0 1.4rem;display:flex;align-items:center;gap:8px;border-right:1px solid #1a2d42;white-space:nowrap;flex-shrink:0}
+.brand-icon{font-size:1.3rem}
+.brand-name{font-size:.82rem;font-weight:700;color:#f0f6ff;letter-spacing:.03em}
+.brand-sub{font-size:.65rem;color:#4a6a88}
+.tabs{display:flex;overflow-x:auto;flex:1}
+.tab{padding:.9rem 1.1rem;font-size:.72rem;font-weight:600;color:#4a6a88;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;letter-spacing:.04em;text-transform:uppercase;border-right:1px solid #0d1b2a22;user-select:none}
+.tab:hover{color:#8ab0cc;background:#0a1520}
+.tab.active{color:#5ab4ff;border-bottom-color:#5ab4ff;background:#0a1520}
+.tab.day-tab{font-size:.68rem;padding:.9rem .65rem}
+.tab.day-tab.active{color:#ff8c5a;border-bottom-color:#ff6b2b}
+.tab.day-tab.fiambala-tab.active{color:#5ab4ff;border-bottom-color:#1a8fff}
+.tab.day-tab.puna-tab.active{color:#3ddba0;border-bottom-color:#00c977}
+.page{display:none;padding:1.4rem;max-width:1200px;margin:0 auto}
+.page.active{display:block}
+.card{background:#0a1520;border:1px solid #1a2d42;border-radius:10px;padding:1rem 1.2rem;margin-bottom:1rem}
+.card-title{font-size:.82rem;font-weight:700;color:#8ab0cc;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid #1a2d42}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:1rem}
+.stat{background:#060f18;border:1px solid #1a2d42;border-radius:8px;padding:.9rem 1rem}
+.stat-v{font-size:1.5rem;font-weight:700;color:#f0f6ff;line-height:1}
+.stat-v small{font-size:.7rem;font-weight:400;color:#4a6a88;margin-left:2px}
+.stat-l{font-size:.63rem;color:#4a6a88;margin-top:4px;text-transform:uppercase;letter-spacing:.06em}
+.stat-i{font-size:1rem;margin-bottom:5px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem}
+@media(max-width:700px){.g2,.g3{grid-template-columns:1fr}}
+.timeline{position:relative;padding-left:1.8rem}
+.timeline::before{content:'';position:absolute;left:7px;top:0;bottom:0;width:2px;background:#1a2d42}
+.tl-item{position:relative;margin-bottom:1.2rem;padding-left:.8rem}
+.tl-dot{position:absolute;left:-1.8rem;top:3px;width:14px;height:14px;border-radius:50%;border:2px solid #0d1b2a;flex-shrink:0}
+.tl-dot.orange{background:#ff6b2b}
+.tl-dot.blue{background:#1a8fff}
+.tl-dot.green{background:#00c977}
+.tl-dot.teal{background:#00b4aa}
+.tl-dot.red{background:#e24b4a}
+.tl-dot.gray{background:#4a6a88}
+.tl-dot.purple{background:#9b59b6}
+.tl-time{display:inline-block;font-size:.68rem;font-weight:800;color:#f5c842;background:#f5c84218;border:1px solid #f5c84244;border-radius:5px;padding:1px 7px;margin-right:6px;letter-spacing:.02em}
+.tl-title{font-size:.8rem;font-weight:600;color:#d0dde8;margin-bottom:2px}
+.tl-sub{font-size:.72rem;color:#5a7a96;line-height:1.45}
+.tl-badge{display:inline-block;font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:20px;margin-top:4px;letter-spacing:.05em}
+.badge-orange{background:#ff6b2b22;color:#ff8c5a;border:1px solid #ff6b2b44}
+.badge-blue{background:#1a8fff22;color:#5ab4ff;border:1px solid #1a8fff44}
+.badge-green{background:#00c97722;color:#3ddba0;border:1px solid #00c97744}
+.badge-amber{background:#f5c84222;color:#f5c842;border:1px solid #f5c84244}
+.badge-red{background:#e24b4a22;color:#e27a7a;border:1px solid #e24b4a44}
+.badge-fuel{background:#ff6b2b22;color:#ffb366;border:1px solid #ff6b2b66}
+.badge-time{background:#f5c84222;color:#f5c842;border:1px solid #f5c84244}
+table{width:100%;border-collapse:collapse}
+th{font-size:.65rem;font-weight:700;color:#4a6a88;text-transform:uppercase;letter-spacing:.07em;padding:.5rem .7rem;text-align:left;border-bottom:1px solid #1a2d42}
+td{font-size:.75rem;color:#a0b8cc;padding:.45rem .7rem;border-bottom:1px solid #0f1e2d}
+tr:hover td{background:#0a1520}
+tr td:first-child{color:#d0dde8;font-weight:500}
+.food-item{display:flex;gap:12px;padding:.7rem 0;border-bottom:1px solid #0f1e2d}
+.food-item:last-child{border-bottom:none}
+.food-icon{font-size:1.4rem;width:32px;flex-shrink:0;text-align:center}
+.food-name{font-size:.8rem;font-weight:600;color:#d0dde8;margin-bottom:2px}
+.food-desc{font-size:.7rem;color:#5a7a96;line-height:1.4}
+.food-price{font-size:.65rem;color:#3ddba0;margin-top:3px;font-weight:600}
+.hotel-item{display:flex;gap:12px;align-items:flex-start;padding:.7rem 0;border-bottom:1px solid #0f1e2d}
+.hotel-item:last-child{border-bottom:none}
+.hotel-stars{color:#f5c842;font-size:.75rem;margin-bottom:2px}
+.hotel-name{font-size:.8rem;font-weight:600;color:#d0dde8}
+.hotel-loc{font-size:.68rem;color:#5a7a96}
+.hotel-price{font-size:.7rem;color:#3ddba0;font-weight:600}
+.hotel-note{font-size:.65rem;color:#4a6a88;margin-top:2px}
+.day-header{background:linear-gradient(135deg,#060f18 0%,#0a1a28 100%);border:1px solid #1a2d42;border-radius:12px;padding:1.4rem;margin-bottom:1rem;display:flex;gap:1.2rem;align-items:flex-start}
+.day-num-big{font-size:2.5rem;font-weight:800;color:#1a2d42;line-height:1;min-width:60px}
+.day-title{font-size:1.1rem;font-weight:700;color:#f0f6ff;margin-bottom:3px}
+.day-route{font-size:.78rem;color:#8ab0cc;margin-bottom:.5rem}
+.day-pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{font-size:.62rem;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.04em}
+.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.8rem}
+.video-card{background:#060f18;border:1px solid #1a2d42;border-radius:8px;overflow:hidden;cursor:pointer;transition:border-color .15s}
+.video-card:hover{border-color:#2a4060}
+.video-thumb{position:relative;padding-top:56.25%;background:#0a1520;overflow:hidden}
+.video-info{padding:.6rem .8rem}
+.video-channel{font-size:.62rem;font-weight:700;color:#5ab4ff;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+.video-title{font-size:.72rem;color:#a0b8cc;line-height:1.35}
+.map-frame{width:100%;height:450px;border-radius:10px;border:1px solid #1a2d42;overflow:hidden}
+.map-tabs{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.map-tab{font-size:.68rem;font-weight:600;padding:5px 14px;border-radius:20px;cursor:pointer;border:1px solid #1a2d42;color:#4a6a88;background:#060f18;transition:all .15s}
+.map-tab.active{background:#1a8fff22;color:#5ab4ff;border-color:#1a8fff44}
+.tip-item{display:flex;gap:10px;padding:.65rem 0;border-bottom:1px solid #0f1e2d}
+.tip-item:last-child{border-bottom:none}
+.tip-icon{font-size:1.1rem;width:28px;flex-shrink:0;text-align:center;margin-top:1px}
+.tip-text{font-size:.75rem;color:#8ab0cc;line-height:1.5}
+.tip-text strong{color:#d0dde8;font-weight:600}
+.yt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.7rem;margin-bottom:1rem}
+.yt-card{background:#060f18;border:1px solid #1a2d42;border-radius:8px;padding:.7rem;text-align:center;cursor:pointer;transition:border-color .15s}
+.yt-card:hover{border-color:#ff4444}
+.yt-avatar{width:44px;height:44px;border-radius:50%;background:#1a2d42;margin:0 auto .4rem;display:flex;align-items:center;justify-content:center;font-size:1.3rem;border:2px solid #ff444444}
+.yt-name{font-size:.7rem;font-weight:700;color:#d0dde8;margin-bottom:2px}
+.yt-desc{font-size:.6rem;color:#4a6a88;line-height:1.3}
+.sep{height:1px;background:#1a2d42;margin:.8rem 0}
+h2{font-size:.9rem;font-weight:700;color:#8ab0cc;letter-spacing:.05em;text-transform:uppercase;margin:.8rem 0 .5rem}
+h3{font-size:.82rem;font-weight:600;color:#d0dde8;margin:.6rem 0 .4rem}
+p{font-size:.75rem;color:#6a8aaa;line-height:1.55;margin-bottom:.5rem}
+.highlight{color:#5ab4ff}
+.warn{color:#f5c842}
+.danger{color:#e27a7a}
+.success{color:#3ddba0}
+.confirm-box{background:#0d1e35;border:1px solid #00c97744;border-radius:8px;padding:1rem;margin-bottom:.8rem}
+.confirm-box.blue{border-color:#1a8fff44}
+.pending-box{background:#241a10;border:1px solid #e24b4a44;border-radius:8px;padding:1rem;margin-bottom:.8rem}
+.plan-box{background:#0d1a12;border:1px solid #00c97744;border-radius:8px;padding:1rem;margin-bottom:.8rem}
+.flight-box{background:#1a1030;border:1px solid #9b59b644;border-radius:8px;padding:1rem;margin-bottom:.8rem}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="brand-icon">🏍️</span>
+    <div>
+      <div class="brand-name">Catamarca 2026</div>
+      <div class="brand-sub">CF450 MT · 10–23 oct</div>
+    </div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="showPage('generalidades')">📊 Generalidades</div>
+    <div class="tab" onclick="showPage('comer')">🍽️ Comer</div>
+    <div class="tab" onclick="showPage('pernocte')">🏨 Pernocte</div>
+    <div class="tab day-tab" onclick="showPage('d1')">D1</div>
+    <div class="tab day-tab" onclick="showPage('d2')">D2</div>
+    <div class="tab day-tab" onclick="showPage('d3')">D3</div>
+    <div class="tab day-tab" onclick="showPage('d4')">D4</div>
+    <div class="tab day-tab" onclick="showPage('d5')">D5</div>
+    <div class="tab day-tab fiambala-tab" onclick="showPage('d6')">D6 ★</div>
+    <div class="tab day-tab fiambala-tab" onclick="showPage('d7')">D7</div>
+    <div class="tab day-tab fiambala-tab" onclick="showPage('d8')">D8</div>
+    <div class="tab day-tab puna-tab" onclick="showPage('d9')">D9</div>
+    <div class="tab day-tab puna-tab" onclick="showPage('d10')">D10</div>
+    <div class="tab day-tab puna-tab" onclick="showPage('d11')">D11</div>
+    <div class="tab day-tab" onclick="showPage('d12')">D12</div>
+    <div class="tab day-tab" onclick="showPage('d13')">D13</div>
+    <div class="tab day-tab" onclick="showPage('d14')">D14 ✈️</div>
+    <div class="tab" onclick="showPage('mapas')">🗺️ Mapas</div>
+    <div class="tab" onclick="showPage('tips')">💡 Tips</div>
+  </div>
+</div>
+
+<!-- ==================== GENERALIDADES ==================== -->
+<div id="page-generalidades" class="page active">
+  <div class="flight-box" style="margin-bottom:1rem">
+    <div style="display:flex;gap:1.5rem;flex-wrap:wrap;align-items:center">
+      <div><div style="font-size:.65rem;color:#c39bd3;text-transform:uppercase;letter-spacing:.05em">Salida del viaje</div><div style="font-size:1rem;font-weight:700;color:#f0f6ff">Sáb 10/10 · 07:00 hs</div><div style="font-size:.68rem;color:#8ab0cc">CABA, Palermo</div></div>
+      <div style="font-size:1.3rem;color:#4a6a88">→</div>
+      <div><div style="font-size:.65rem;color:#c39bd3;text-transform:uppercase;letter-spacing:.05em">Vuelo de regreso</div><div style="font-size:1rem;font-weight:700;color:#f0f6ff">Vie 23/10 · Despega 19:45 hs</div><div style="font-size:.68rem;color:#8ab0cc">Aeropuerto Felipe Varela (CTC), San Fernando del Valle de Catamarca</div></div>
+      <div style="font-size:1.3rem;color:#4a6a88">→</div>
+      <div><div style="font-size:.65rem;color:#c39bd3;text-transform:uppercase;letter-spacing:.05em">Motos</div><div style="font-size:1rem;font-weight:700;color:#f0f6ff">Se entregan en SF del Valle</div><div style="font-size:.68rem;color:#8ab0cc">Coordinar punto y horario el mismo viernes</div></div>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-i">📅</div><div class="stat-v">14<small>días</small></div><div class="stat-l">10/10 07:00 → 23/10 19:45</div></div>
+    <div class="stat"><div class="stat-i">🛣️</div><div class="stat-v">~2.565<small>km</small></div><div class="stat-l">Aprox. sin excursiones opcionales</div></div>
+    <div class="stat"><div class="stat-i">🏨</div><div class="stat-v">13<small>noches</small></div><div class="stat-l">10 confirmadas · 3 a definir</div></div>
+    <div class="stat"><div class="stat-i">✅</div><div class="stat-v">5<small>reservas</small></div><div class="stat-l">Chilecito, Abaucan, El Peñón, Andalgalá, SF del Valle</div></div>
+    <div class="stat"><div class="stat-i">🏠</div><div class="stat-v">2<small>noches</small></div><div class="stat-l">Casa Chilecito (cable carril) confirmadas — 12 y 13/10</div></div>
+    <div class="stat"><div class="stat-i">🏍️</div><div class="stat-v">2<small>motos</small></div><div class="stat-l">CF450 MT · 5.5L/100</div></div>
+    <div class="stat"><div class="stat-i">⛽</div><div class="stat-v">5<small>tramos</small></div><div class="stat-l">Días 2, 5, 8→9, 11, 12 con carga crítica</div></div>
+    <div class="stat"><div class="stat-i">✈️</div><div class="stat-v">19:45<small>hs</small></div><div class="stat-l">Despegue CTC → confirmar destino/escala</div></div>
+  </div>
+
+  <div class="g2">
+    <div>
+      <div class="card">
+        <div class="card-title">Itinerario completo — con horarios y rutas</div>
+        <table>
+          <thead><tr><th>Día</th><th>Fecha</th><th>Tramo</th><th>Salida</th><th>Llegada aprox.</th><th>Hs manejo</th><th>Km</th><th>Pernocte</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Sáb 10/10</td><td>CABA (Palermo) → Villa Allende</td><td>07:00</td><td>~17:30-18:30</td><td>~10.5h</td><td>~715</td><td style="color:#e27a7a">Villa Allende — A DEF.</td></tr>
+            <tr><td>2</td><td>Dom 11/10</td><td>Villa Allende → Chilecito directo (sug., noche previa)</td><td>07:00</td><td>~17:00-18:00</td><td>~9.5h</td><td>~590 ⛽⛽</td><td style="color:#e27a7a">A DEF. (sug. Chilecito, hotel/hospedaje)</td></tr>
+            <tr style="background:#0d1e0f"><td>3</td><td style="color:#3ddba0">Lun 12/10</td><td>Chilecito · mañana libre → Check-in casa 15:00</td><td>—</td><td>—</td><td>0</td><td>0</td><td style="color:#3ddba0">✅ Chilecito (casa) 1/2</td></tr>
+            <tr style="background:#0d1e0f"><td>4</td><td style="color:#3ddba0">Mar 13/10</td><td>Chilecito · día libre</td><td>—</td><td>—</td><td>0 (op. +4-5h)</td><td>0</td><td style="color:#3ddba0">✅ Chilecito (casa) 2/2</td></tr>
+            <tr><td>5</td><td>Mié 14/10</td><td>Checkout 11:00 → Tinogasta o Fiambalá (sug.)</td><td>11:00</td><td>~15:30-17:30</td><td>~4-5h</td><td>~220-270 ⛽⛽</td><td style="color:#e27a7a">A DEF. (sug. Tinogasta: bodega, o Fiambalá)</td></tr>
+            <tr style="background:#0a1a2e"><td>6</td><td style="color:#5ab4ff">Jue 15/10</td><td style="color:#5ab4ff">→ Fiambalá · Check-in Abaucan 16:00</td><td>09:00</td><td>~10:00-11:00</td><td>~1h</td><td>~50</td><td style="color:#5ab4ff">✅ Fiambalá — Abaucan 1/3</td></tr>
+            <tr style="background:#0a1a2e"><td>7</td><td style="color:#5ab4ff">Vie 16/10</td><td>Fiambalá — Balcón del Pissis (i/v)</td><td>07:00</td><td>Regreso ~14:00-15:00</td><td>~6-7h (con parada)</td><td>~200</td><td style="color:#5ab4ff">✅ Fiambalá — Abaucan 2/3</td></tr>
+            <tr style="background:#0a1a2e"><td>8</td><td style="color:#5ab4ff">Sáb 17/10</td><td>Fiambalá — Dunas Tatón + Termas</td><td>09:00</td><td>Regreso ~19:00</td><td>~2h manejo</td><td>~60</td><td style="color:#5ab4ff">✅ Fiambalá — Abaucan 3/3</td></tr>
+            <tr style="background:#0d1a2e"><td>9</td><td style="color:#3ddba0">Dom 18/10</td><td style="color:#3ddba0">Checkout 10:30 → El Peñón</td><td>10:30-11:00</td><td>~18:00-19:00</td><td>~7.5h</td><td>~220 ⛽⛽</td><td style="color:#3ddba0">✅ El Peñón — Ecolodge 1/2</td></tr>
+            <tr style="background:#0d1a2e"><td>10</td><td style="color:#3ddba0">Lun 19/10</td><td>El Peñón — día libre / puna</td><td>—</td><td>—</td><td>0 (op. +3-4h)</td><td>0</td><td style="color:#3ddba0">✅ El Peñón — Ecolodge 2/2</td></tr>
+            <tr style="background:#0d1a2e"><td>11</td><td style="color:#3ddba0">Mar 20/10</td><td style="color:#3ddba0">Checkout 06:00-10:00 → Andalgalá</td><td>07:00</td><td>~14:30-15:30</td><td>~7.7h</td><td>~280 ⛽⛽</td><td style="color:#3ddba0">✅ Andalgalá — Dptos La Perla</td></tr>
+            <tr><td>12</td><td>Mié 21/10</td><td>Checkout 10:00 → Ruta Prov. 1 → El Rodeo/La Puerta</td><td>10:00</td><td>~15:00</td><td>~5h</td><td>~160 ⛽</td><td style="color:#e27a7a">A DEF. (sug. El Rodeo/La Puerta)</td></tr>
+            <tr style="background:#0d1e0f"><td>13</td><td style="color:#3ddba0">Jue 22/10</td><td>El Rodeo/La Puerta → SF del Valle · Check-in 16:00</td><td>13:00 (flex.)</td><td>~14:00</td><td>~1h</td><td>~45</td><td style="color:#3ddba0">✅ SF del Valle — Hotel Casino</td></tr>
+            <tr style="background:#1a1030"><td>14</td><td style="color:#c39bd3">Vie 23/10</td><td style="color:#c39bd3">Entrega de motos · día libre · traslado aeropuerto</td><td>Traslado 17:00-17:15</td><td>Despegue 19:45</td><td>—</td><td>—</td><td style="color:#c39bd3">✈️ Vuelo de regreso — fin del viaje</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:.6rem">⏱️ Los horarios de llegada son estimados e incluyen paradas de nafta/comida. En tramos de ripio (días 6, 9, 11, 12) conviene salir apenas se pueda dentro de la ventana permitida.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">✅ Las 5 reservas confirmadas</div>
+        <table>
+          <thead><tr><th>Alojamiento</th><th>Fechas</th><th>Detalle</th></tr></thead>
+          <tbody>
+            <tr><td>Casa Av. la Mexicana, Chilecito</td><td>12→14 oct</td><td>Casa de 3 dorm. · 2 adultos · cerca del cable carril</td></tr>
+            <tr><td>Hotel Abaucan & Spa, Fiambalá</td><td>15→18 oct</td><td>3 noches · Hab. Superior · status "a confirmar" en el voucher</td></tr>
+            <tr><td>Ecolodge El Peñón</td><td>18→20 oct</td><td>2 noches · hab. doble 2 camas · 2 adultos</td></tr>
+            <tr><td>Dptos La Perla, Andalgalá</td><td>20→21 oct</td><td>1 noche · anfitrión Dino · Av. Adolfo E. Carranza</td></tr>
+            <tr><td>Hotel Casino Catamarca, SF del Valle</td><td>22→24 oct (usan solo 1 noche)</td><td>2 habitaciones · reservado 22-23, pero el vuelo sale la noche del 23 → sobra la 2ª noche</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-title">📌 Qué cambió en esta versión</div>
+        <div class="tip-item"><div class="tip-icon">🆕</div><div class="tip-text"><strong>Noche del 11/10 → sugerida en Chilecito.</strong> En vez de cortar en La Rioja, se sugiere ir directo de Villa Allende a Chilecito (~590km, día largo) y dormir ahí una noche antes del check-in oficial de la casa (12/10 15:00) — en un hotel/hospedaje aparte, ya que la reserva de la casa empieza recién el día 12.</div></div>
+        <div class="tip-item"><div class="tip-icon">🔄</div><div class="tip-text"><strong>Noche del 14/10 → vuelve a ser Tinogasta o Fiambalá.</strong> Después del checkout de la casa (2 noches confirmadas, sin extensión), se sugiere dormir en Tinogasta —hay bodegas con hospedaje— o seguir viaje y buscar alojamiento en Fiambalá esa noche, ya que el check-in confirmado del Abaucan es recién el 15/10 a las 16:00.</div></div>
+        <div class="tip-item"><div class="tip-icon">✈️</div><div class="tip-text"><strong>Vuelo confirmado: vie 23/10, 19:45 hs desde CTC.</strong> El viaje ahora termina en 14 días (no 15). La 2ª noche del Hotel Casino Catamarca (23→24) queda de más — revisar con el hotel si se puede dar de baja esa noche o se pierde el importe.</div></div>
+        <div class="tip-item"><div class="tip-icon">🏍️</div><div class="tip-text"><strong>Entrega de motos en SF del Valle</strong> el viernes 23/10 por la mañana, para tener el resto del día libre antes del vuelo.</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Horas de conducción por día — detalle de ruta</div>
+        <table>
+          <thead><tr><th>Día</th><th>Ruta detallada</th><th>Hs</th><th>Tipo</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>RN9/RN8 CABA→Rosario→Córdoba→V.Allende</td><td>~10.5h</td><td>Asfalto</td></tr>
+            <tr><td>2</td><td>RN9→RN60 vía Deán Funes/Cruz del Eje/La Rioja → RN75 Chilecito</td><td>~9.5h</td><td>Asfalto (día largo)</td></tr>
+            <tr><td>3</td><td>Chilecito — mañana libre, check-in casa 15:00</td><td>—</td><td>Día libre</td></tr>
+            <tr><td>4</td><td>Chilecito — libre</td><td>—</td><td>Día libre</td></tr>
+            <tr><td>5</td><td>RN40 Villa Unión, Cuesta de Miranda → Tinogasta (o +RN60 hasta Fiambalá)</td><td>~4-5h</td><td>Asfalto + ripio parcial</td></tr>
+            <tr style="color:#5ab4ff"><td>6</td><td>RN60 Ruta del Adobe Tinogasta→Fiambalá</td><td>~1h</td><td>Asfalto</td></tr>
+            <tr style="color:#5ab4ff"><td>7</td><td>RN60 Fiambalá→Paso San Francisco (i/v)</td><td>~6-7h</td><td>Asfalto</td></tr>
+            <tr style="color:#5ab4ff"><td>8</td><td>Dunas Tatón/Saujil + Termas (local)</td><td>~2h</td><td>Ripio suave</td></tr>
+            <tr style="color:#3ddba0"><td>9</td><td>RP45 Fiambalá-Villa Vil → RP43 → El Peñón</td><td>~7.5h</td><td>Mayoría ripio/montaña</td></tr>
+            <tr style="color:#3ddba0"><td>10</td><td>El Peñón — libre</td><td>—</td><td>Día libre</td></tr>
+            <tr style="color:#3ddba0"><td>11</td><td>RP43 → Belén (RN40) → Andalgalá</td><td>~7.7h</td><td>Ripio/asfalto mixto</td></tr>
+            <tr><td>12</td><td>Ruta Provincial 1 — Sierra de Ambato</td><td>~5h</td><td>Montaña, ripio parcial</td></tr>
+            <tr><td>13</td><td>RP1/RP4 El Rodeo/La Puerta→SF del Valle</td><td>~1h</td><td>Asfalto</td></tr>
+            <tr><td>14</td><td>SF del Valle → Aeropuerto CTC (~15-20min)</td><td>—</td><td>Traslado + vuelo</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title">CF450 MT — Datos clave</div>
+        <table>
+          <thead><tr><th>Parámetro</th><th>Valor</th></tr></thead>
+          <tbody>
+            <tr><td>Consumo</td><td>5.5 L/100 km</td></tr>
+            <tr><td>Tanque</td><td>17.5 L</td></tr>
+            <tr><td>Autonomía</td><td>~318 km (con reserva ~291 km)</td></tr>
+            <tr><td>Vel. asfalto</td><td>80-90 km/h promedio</td></tr>
+            <tr><td>Vel. ripio/montaña</td><td>35-50 km/h según tramo</td></tr>
+            <tr><td>Nafta oct 2026</td><td>~$1.600/L (norte argentino)</td></tr>
+            <tr><td>Días con ⛽ crítico</td><td>Días 2, 5, 8→9, 11, 12 (ver pestaña Tips)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== COMER ==================== -->
+<div id="page-comer" class="page">
+  <div class="g2">
+    <div>
+      <div class="card">
+        <div class="card-title">🍖 Villa Allende, La Rioja & Chilecito</div>
+        <div class="food-item"><div class="food-icon">🥩</div><div><div class="food-name">Parrillas de Villa Allende / Córdoba capital</div><div class="food-desc">Amplia oferta de parrilla cordobesa para la primera noche.</div><div class="food-price">$18.000–$28.000 pp</div></div></div>
+        <div class="food-item"><div class="food-icon">🦙</div><div><div class="food-name">La Rioja capital — centro</div><div class="food-desc">Parrilla regional, cabrito al asador, locro norteño.</div><div class="food-price">$15.000–$25.000 pp</div></div></div>
+        <div class="food-item"><div class="food-icon">🍷</div><div><div class="food-name">Bodega Nonino (Chilecito)</div><div class="food-desc">Cata + tabla de quesos y fiambres riojanos.</div><div class="food-price">$12.000–$20.000 pp</div></div></div>
+        <div class="food-item"><div class="food-icon">🥙</div><div><div class="food-name">Mercado Artesanal Chilecito</div><div class="food-desc">Empanadas horneadas, humitas, tamales. Desayuno ideal.</div><div class="food-price">$2.000–$4.000 c/u</div></div></div>
+        <div class="food-item"><div class="food-icon">☕</div><div><div class="food-name">Café del Cable (Chilecito)</div><div class="food-desc">Frente al histórico cable carril — a pasos de la casa reservada. Medialunas, café, vista serrana.</div><div class="food-price">$6.000–$10.000 pp</div></div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">🌵 Tinogasta & Fiambalá</div>
+        <div class="food-item"><div class="food-icon">🍷</div><div><div class="food-name">Bodega Don Ceferino (Tinogasta)</div><div class="food-desc">Opción para pernoctar la noche del día 5 (tienen hospedaje) — Malbec y Torrontés a 1.200 msnm.</div><div class="food-price">$8.000–$15.000 cata</div></div></div>
+        <div class="food-item"><div class="food-icon">🥘</div><div><div class="food-name">Hotel Abaucan SPA (Fiambalá)</div><div class="food-desc">Cordero al asador, empanadas, locro. Las 3 noches confirmadas incluyen media pensión.</div><div class="food-price">Incluido en la reserva</div></div></div>
+        <div class="food-item"><div class="food-icon">🫓</div><div><div class="food-name">Parador El Adobe (Fiambalá)</div><div class="food-desc">Empanadas regionales, humitas. Económico y auténtico.</div><div class="food-price">$8.000–$15.000 pp</div></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-title">🏔️ El Peñón, Belén & Andalgalá</div>
+        <div class="food-item"><div class="food-icon">🍲</div><div><div class="food-name">Comedor del Ecolodge El Peñón</div><div class="food-desc">Confirmar con el anfitrión si ofrece cena — pueblo muy chico.</div><div class="food-price">A confirmar</div></div></div>
+        <div class="food-item"><div class="food-icon">🥫</div><div><div class="food-name">Tramo Fiambalá/Belén → El Peñón</div><div class="food-desc">⚠️ Zona de poca oferta gastronómica y de combustible. Llevar vianda, agua y nafta de reserva.</div><div class="food-price">Llevar por las dudas</div></div></div>
+        <div class="food-item"><div class="food-icon">🥐</div><div><div class="food-name">Panadería del Centro (Belén, si se pasa por ahí)</div><div class="food-desc">Buena parada en los días 9 u 11 si el tramo cruza Belén.</div><div class="food-price">$1.500–$2.000 c/u</div></div></div>
+        <div class="food-item"><div class="food-icon">🏘️</div><div class="food-name">Andalgalá centro</div><div class="food-desc">Pueblo más grande de la zona — mejor variedad de comedores y estación de servicio.</div><div class="food-price">$8.000–$15.000 pp</div></div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">⛰️ El Rodeo / La Puerta & San Fernando del Valle</div>
+        <div class="food-item"><div class="food-icon">🍽️</div><div><div class="food-name">El Rodeo — comedores de sierra</div><div class="food-desc">Buena parada del día 12 sobre Ruta Provincial 1.</div><div class="food-price">$10.000–$18.000 pp</div></div></div>
+        <div class="food-item"><div class="food-icon">🍷</div><div><div class="food-name">San Fernando del Valle — centro</div><div class="food-desc">Capital provincial, buena variedad para el cierre del viaje antes del vuelo.</div><div class="food-price">$12.000–$22.000 pp</div></div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">📍 Reglas de oro para comer</div>
+        <div class="tip-item"><div class="tip-icon">💵</div><div class="tip-text"><strong>Siempre efectivo en la puna.</strong> Sacar plata antes de Belén o El Peñón.</div></div>
+        <div class="tip-item"><div class="tip-icon">🕐</div><div class="tip-text"><strong>Horarios norteños.</strong> Almuerzo 12:30–15:00. Cena desde las 21hs.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PERNOCTE ==================== -->
+<div id="page-pernocte" class="page">
+  <div class="g2">
+    <div>
+      <div class="card">
+        <div class="card-title">❓ Noches a definir (3)</div>
+        <div class="pending-box">
+          <div class="hotel-name" style="color:#e27a7a">Noche 1 — Villa Allende (sáb 10/10)</div>
+          <div class="hotel-note" style="margin-top:6px">Sin reserva. <strong style="color:#f5c842">Sugerencia:</strong> hotel/cabaña con cochera cerrada para las motos, zona Golf Club o Av. Donato Álvarez. Llegada estimada 17:30-18:30.</div>
+        </div>
+        <div class="pending-box">
+          <div class="hotel-name" style="color:#e27a7a">Noche 2 — destino a definir (dom 11/10)</div>
+          <div class="hotel-note" style="margin-top:6px"><strong style="color:#f5c842">Sugerencia:</strong> ir directo hasta Chilecito (~590km, día largo, salida 07:00, llegada estimada 17:00-18:00) y dormir esa noche en un hotel/hospedaje del pueblo — todavía no es la casa reservada, cuyo check-in oficial es recién el 12/10 a las 15:00.<br><strong style="color:#f5c842">Alternativa:</strong> cortar en La Rioja capital si prefieren repartir mejor las horas de manejo entre el día 1 y el día 2.</div>
+        </div>
+        <div class="pending-box">
+          <div class="hotel-name" style="color:#e27a7a">Noche 5 — Tinogasta o Fiambalá (mié 14/10)</div>
+          <div class="hotel-note" style="margin-top:6px"><strong style="color:#f5c842">Sugerencia A:</strong> dormir en Tinogasta, en alguna bodega con hospedaje (ej. zona de Don Ceferino) — deja un salto corto de 50km el día 6 antes del check-in de Abaucan.<br><strong style="color:#f5c842">Sugerencia B:</strong> seguir viaje hasta Fiambalá y buscar alojamiento alternativo esa noche (no es el Abaucan, cuyo check-in confirmado es el 15/10 16:00) — llegan con el pueblo ya conocido y el día 6 queda libre hasta el check-in.</div>
+        </div>
+        <div class="pending-box">
+          <div class="hotel-name" style="color:#e27a7a">Noche 12 — Ruta Provincial 1 (mié 21/10)</div>
+          <div class="hotel-note" style="margin-top:6px"><strong style="color:#f5c842">Sugerencia:</strong> El Rodeo o La Puerta, en la Sierra de Ambato. Llegada estimada 15:00. Deja el día 13 corto (~1h) y tranquilo hasta el check-in del Hotel Casino a las 16:00.</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-title">✅ Casa en Chilecito (cable carril)</div>
+        <div class="confirm-box">
+          <div class="hotel-stars" style="font-size:1rem;color:#3ddba0">★★★ Casa completa</div>
+          <div class="hotel-name" style="font-size:.95rem;color:#3ddba0;margin-bottom:4px">Casa de 3 dormitorios — 2 noches (12 y 13/10)</div>
+          <div class="hotel-loc" style="margin-bottom:4px">Avenida la Mexicana 5360, Chilecito, Argentina</div>
+          <div class="hotel-price" style="font-size:.8rem">Reservado para 2 adultos</div>
+          <div class="hotel-note" style="color:#8ab0cc;margin-top:6px">Entrada: lunes 12/10 desde las 15:00 (ya están en Chilecito desde la noche anterior).<br>Salida: miércoles 14/10 hasta las 11:00.</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">✅ Fiambalá — Hotel Abaucan & Spa</div>
+        <div class="confirm-box blue">
+          <div class="hotel-stars" style="font-size:1rem">Reserva N° 90514</div>
+          <div class="hotel-name" style="font-size:.95rem;color:#5ab4ff;margin-bottom:4px">Habitación Superior — 3 noches (15, 16 y 17/10)</div>
+          <div class="hotel-loc" style="margin-bottom:4px">Ruta Provincial 34, Barrio Pampa Blanca, Fiambalá, Catamarca</div>
+          <div class="hotel-price" style="font-size:.8rem">Check-in 16:00 · Check-out 10:30 · media pensión</div>
+          <div class="hotel-note" style="color:#8ab0cc;margin-top:6px"><strong style="color:#f5c842">⚠️ Voucher "a confirmar".</strong> Si duermen en Tinogasta la noche anterior, llegan temprano (~10:00-11:00) y esperan el check-in de las 16:00 en el pueblo.</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">✅ Ecolodge El Peñón</div>
+        <div class="confirm-box">
+          <div class="hotel-name" style="font-size:.95rem;color:#3ddba0;margin-bottom:4px">Habitación doble, 2 camas — 2 noches (18 y 19/10)</div>
+          <div class="hotel-loc" style="margin-bottom:4px">GPCJ+3XH El Peñón, Catamarca · Tel. +54 9 3835 590301</div>
+          <div class="hotel-note" style="color:#8ab0cc;margin-top:6px">Entrada: domingo 18/10, 14:00-23:00 (llegada estimada 18:00-19:00).<br>Salida: martes 20/10, 06:00-10:00 — salir lo antes posible.</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">✅ Andalgalá — Dptos La Perla</div>
+        <div class="confirm-box">
+          <div class="hotel-name" style="font-size:.95rem;color:#3ddba0;margin-bottom:4px">1 noche (20/10) · Anfitrión: Dino</div>
+          <div class="hotel-loc" style="margin-bottom:4px">Avenida Adolfo E. Carranza, Andalgalá, Catamarca 4740</div>
+          <div class="hotel-note" style="color:#8ab0cc;margin-top:6px">Entrada: martes 20/10 desde las 15:00 (llegada estimada 14:30-15:30).<br>Salida: miércoles 21/10 hasta las 10:00.</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">✅ San Fernando del Valle — Hotel Casino Catamarca</div>
+        <div class="confirm-box">
+          <div class="hotel-name" style="font-size:.95rem;color:#3ddba0;margin-bottom:4px">2 habitaciones — reservado 22 y 23/10, se usa 1 sola noche</div>
+          <div class="hotel-loc" style="margin-bottom:4px">151 Esquiú, San Fernando del Valle de Catamarca · Tel. +54 383 443-2928</div>
+          <div class="hotel-note" style="color:#8ab0cc;margin-top:6px">Entrada: jueves 22/10, 16:00-00:00.<br>El vuelo sale el viernes 23/10 a las 19:45 → <strong style="color:#f5c842">contactar al hotel para ver si se puede dar de baja la noche del 23 al 24.</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== DÍA 1 ==================== -->
+<div id="page-d1" class="page">
+  <div class="day-header">
+    <div class="day-num-big">01</div>
+    <div class="day-info-main">
+      <div class="day-title">CABA (Palermo) → Villa Allende</div>
+      <div class="day-route">Sáb 10/10 · Salida 07:00 · Llegada estimada 17:30-18:30 · ~715 km · ~10.5h</div>
+      <div class="day-pills"><span class="pill badge-orange">Asfalto</span><span class="pill badge-time">Salida 07:00</span></div>
+    </div>
+  </div>
+  <div class="g2">
+    <div>
+      <div class="card">
+        <div class="card-title">Detalle del día</div>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title"><span class="tl-time">07:00</span>Salida — CABA, Palermo</div><div class="tl-sub">RN9 hacia Rosario, luego RN9/A012 hacia Córdoba capital.</div></div>
+          <div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title"><span class="tl-time">~11:30</span>Rosario — parada de nafta y almuerzo</div><div class="tl-sub">Punto medio natural del tramo, ~300km desde la salida.</div></div>
+          <div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title"><span class="tl-time">~16:30</span>Córdoba capital — última carga de nafta</div><div class="tl-sub">Cargar tanque lleno antes de los últimos 19km hasta Villa Allende.</div></div>
+          <div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title"><span class="tl-time">~17:30-18:30</span>Llegada — Villa Allende</div><div class="tl-sub">Destino de la primera noche. Falta confirmar alojamiento con cochera para las motos.</div></div>
+        </div>
+        <div class="sep"></div>
+        <div class="tip-item"><div class="tip-icon">⛽</div><div class="tip-text"><strong>Combustible normal.</strong> RN9 tiene estaciones frecuentes — cargar cada 250-280km sin problema.</div></div>
+        <div class="tip-item"><div class="tip-icon">⚡</div><div class="tip-text"><strong>Pendiente:</strong> confirmar alojamiento en Villa Allende con cochera cerrada para 2 motos.</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-title">📺 Videos — inspiración para la ruta</div>
+        <div class="video-grid">
+          <div class="video-card" onclick="openYT('https://www.youtube.com/@PabloImhoff')"><div class="video-thumb" style="background:#1a0a0a;display:flex;align-items:center;justify-content:center;padding-top:0;height:100px"><div style="text-align:center"><div style="font-size:2rem">🏍️</div><div style="font-size:.7rem;color:#ff4444;margin-top:4px">Pablo Imhoff</div></div></div><div class="video-info"><div class="video-channel">Pablo Imhoff</div><div class="video-title">Viaje por Argentina — canal completo. Rutas del NOA y puna.</div></div></div>
+          <div class="video-card" onclick="openYT('https://www.youtube.com/@virguidetti/videos')"><div class="video-thumb" style="background:#1a0a1a;display:flex;align-items:center;justify-content:center;padding-top:0;height:100px"><div style="text-align:center"><div style="font-size:2rem">🏍️</div><div style="font-size:.7rem;color:#ff4444;margin-top:4px">Vir Guidetti</div></div></div><div class="video-info"><div class="video-channel">Vir Guidetti</div><div class="video-title">Catamarca en moto — RN60, Seismiles, NOA completo.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== DÍA 2 ==================== -->
+<div id="page-d2" class="page">
+  <div class="day-header"><div class="day-num-big">02</div><div class="day-info-main"><div class="day-title">Villa Allende → Chilecito directo <em>(sugerido)</em></div><div class="day-route">Dom 11/10 · Salida sugerida 07:00 · Llegada estimada 17:00-18:00 · ~590 km · ~9.5h</div><div class="day-pills"><span class="pill" style="background:#e24b4a22;color:#e27a7a;border:1px solid #e24b4a44">A DEFINIR</span><span class="pill badge-time">Salida 07:00</span><span class="pill badge-fuel">⛽⛽ Día largo</span></div></div></div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Detalle del día</div><div class="timeline">
+      <div class="tl-item"><div class="tl-dot gray"></div><div class="tl-title"><span class="tl-time">07:00</span>Salida — Villa Allende</div><div class="tl-sub">RN9 hasta Villa del Totoral, luego RN60 hacia el oeste. Es un día tan largo como el día 1 — salir temprano.</div></div>
+      <div class="tl-item"><div class="tl-dot gray"></div><div class="tl-title"><span class="tl-time">~09:30</span>Deán Funes / Cruz del Eje — nafta</div><div class="tl-sub">Cargar tanque lleno acá — última estación grande antes de un tramo más despoblado.</div></div>
+      <div class="tl-item"><div class="tl-dot teal"></div><div class="tl-title"><span class="tl-time">~13:00</span>La Rioja capital — almuerzo y nafta</div><div class="tl-sub">Punto medio natural del día (~440km recorridos). Cargar de nuevo antes de seguir.</div></div>
+      <div class="tl-item"><div class="tl-dot green"></div><div class="tl-title"><span class="tl-time">~17:00-18:00</span>Llegada — Chilecito (sugerido)</div><div class="tl-sub">RN75 vía Nonogasta. Dormir esa noche en un hotel/hospedaje del pueblo — la casa reservada recién tiene check-in al día siguiente (12/10, 15:00).</div></div>
+      <div class="tl-item"><div class="tl-dot teal"></div><div class="tl-title">Alternativa — cortar en La Rioja capital</div><div class="tl-sub">Si prefieren repartir mejor las horas de manejo entre el día 1 y el día 2, aunque deja el día 3 con ~150km más por recorrer.</div></div>
+    </div><div class="sep"></div>
+    <div class="tip-item"><div class="tip-icon">⛽⛽</div><div class="tip-text"><strong>Carga obligatoria dos veces en el camino.</strong> ~590km supera ampliamente la autonomía del tanque. Cargar en Cruz del Eje y de nuevo en La Rioja como mínimo.</div></div>
+    <div class="tip-item"><div class="tip-icon">📌</div><div class="tip-text"><strong>Pendiente:</strong> reservar un hotel/hospedaje en Chilecito para esta noche (distinto de la casa, que arranca el 12/10).</div></div>
+    </div></div></div>
+  </div>
+</div>
+
+<!-- ==================== DÍA 3 ==================== -->
+<div id="page-d3" class="page">
+  <div class="day-header"><div class="day-num-big">03</div><div class="day-info-main"><div class="day-title">Chilecito · mañana libre → Check-in casa 15:00</div><div class="day-route">Lun 12/10 · Sin manejo — ya están en Chilecito desde la noche anterior</div><div class="day-pills"><span class="pill badge-green">Reserva confirmada</span><span class="pill badge-blue">Mañana libre</span></div></div></div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Detalle del día</div><div class="timeline">
+      <div class="tl-item"><div class="tl-dot green"></div><div class="tl-title">Mañana — tiempo libre en Chilecito</div><div class="tl-sub">Como llegaron la noche anterior, no hay que manejar. Aprovechar para desayunar tranquilos, recorrer el centro y las estaciones del histórico cable carril.</div></div>
+      <div class="tl-item"><div class="tl-dot green"></div><div class="tl-title"><span class="tl-time">15:00</span>Check-in casa Av. la Mexicana 5360</div><div class="tl-sub">Casa completa de 3 dormitorios, 2 noches (12 y 13/10), reservada para 2 adultos. Mudarse del hospedaje de la noche anterior a la casa.</div></div>
+    </div><div class="sep"></div>
+    <div class="tip-item"><div class="tip-icon">⛽</div><div class="tip-text">Sin urgencia — día sin manejo. Aprovechar para cargar nafta con calma pensando en los días siguientes.</div></div>
+    </div></div></div>
+  </div>
+</div>
+
+<!-- ==================== DÍA 4 ==================== -->
+<div id="page-d4" class="page">
+  <div class="day-header"><div class="day-num-big">04</div><div class="day-info-main"><div class="day-title">Chilecito — día libre (2ª noche en la casa)</div><div class="day-route">Mar 13/10 · Sin check-out — se sigue en Av. la Mexicana 5360</div><div class="day-pills"><span class="pill badge-blue">Día libre</span><span class="pill" style="background:#f5c84222;color:#f5c842;border:1px solid #f5c84244">Opcional: Famatina</span></div></div></div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Detalle del día</div><div class="timeline">
+      <div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title">Día libre en Chilecito</div><div class="tl-sub">Segunda noche en la casa. Único día completo sin manejo largo antes de retomar ruta el día 5 — bueno para descansar o hacer una excursión de día completo.</div></div>
+      <div class="tl-item"><div class="tl-dot green"></div><div class="tl-title"><span class="tl-time">08:00 salida</span>Opción — Famatina / Mina La Mejicana</div><div class="tl-sub">Ripio de montaña hasta 4.600 msnm, ida y vuelta ~120km (~4-5h). La excursión más exigente de la zona.</div></div>
+      <div class="tl-item"><div class="tl-dot teal"></div><div class="tl-title">Opción alternativa — Cuesta de Miranda + Cable Carril</div><div class="tl-sub">Recorrido corto y tranquilo, ideal si prefieren guardar energía para el tramo largo del día 5.</div></div>
+    </div><div class="sep"></div>
+    <div class="tip-item"><div class="tip-icon">⛽</div><div class="tip-text">Si hacen Famatina, salir con tanque lleno — no hay estaciones en la montaña.</div></div>
+    </div></div></div>
+  </div>
+</div>
+
+<!-- ==================== DÍA 5 ==================== -->
+<div id="page-d5" class="page">
+  <div class="day-header"><div class="day-num-big">05</div><div class="day-info-main"><div class="day-title">Checkout Chilecito → Tinogasta o Fiambalá <em>(sugerido)</em></div><div class="day-route">Mié 14/10 · Checkout 11:00 · Llegada estimada 15:30-17:30 · ~220-270 km · ~4-5h</div><div class="day-pills"><span class="pill badge-red">Checkout 11:00</span><span class="pill" style="background:#e24b4a22;color:#e27a7a;border:1px solid #e24b4a44">A DEFINIR</span><span class="pill badge-fuel">⛽⛽ Ripio parcial</span></div></div></div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Detalle del día</div><div class="timeline">
+      <div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title"><span class="tl-time">11:00</span>Checkout casa Chilecito</div><div class="tl-sub">Salida obligatoria de Av. la Mexicana 5360 antes de las 11:00.</div></div>
+      <div class="tl-item"><div class="tl-dot teal"></div><div class="tl-title"><span class="tl-time">~12:30</span>Villa Unión — nafta llena</div><div class="tl-sub">RN40 vía Cuesta de Miranda. Última estación confiable antes del tramo más despoblado.</div></div>
+      <div class="tl-item"><div class="tl-dot teal"></div><div class="tl-title"><span class="tl-time">~15:30-16:00</span>Opción A — Tinogasta (sugerido)</div><div class="tl-sub">~220km desde Chilecito. Dormir en alguna bodega con hospedaje (ej. zona de Don Ceferino). Deja un salto corto de solo 50km el día 6 antes del check-in de Abaucan.</div></div>
+      <div class="tl-item"><div class="tl-dot green"></div><div class="tl-title"><span class="tl-time">~16:30-17:30</span>Opción B — seguir hasta Fiambalá</div><div class="tl-sub">~270km desde Chilecito. Buscar alojamiento alternativo esa noche (no es el Abaucan — el check-in confirmado es recién el 15/10 a las 16:00). El día 6 queda totalmente libre hasta esa hora.</div></div>
+    </div><div class="sep"></div>
+    <div class="tip-item"><div class="tip-icon">⛽⛽</div><div class="tip-text"><strong>Carga crítica.</strong> Llenar el tanque en Chilecito o Villa Unión antes de seguir — el tramo Villa Unión-Tinogasta tiene muy pocas estaciones de servicio confiables.</div></div>
+    <div class="tip-item"><div class="tip-icon">📌</div><div class="tip-text"><strong>Pendiente:</strong> decidir entre Opción A (Tinogasta) u Opción B (Fiambalá) y reservar el alojamiento correspondiente para esta noche.</div></div>
+    </div></div></div>
+  </div>
+</div>
+
+<!-- ==================== DÍA 6 ==================== -->
+<div id="page-d6" class="page">
+  <div class="day-header" style="border-color:#1a8fff44"><div class="day-num-big" style="color:#1a2d42">06</div><div class="day-info-main"><div class="day-title" style="color:#5ab4ff">→ Fiambalá — Check-in Hotel Abaucan</div><div class="day-route">Jue 15/10 · Check-in 16:00 · Depende de dónde durmieron la noche del día 5</div><div class="day-pills"><span class="pill badge-blue">Check-in Abaucan</span><span class="pill badge-green">Reserva confirmada</span></div></div></div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Detalle del día</div><div class="timeline">
+      <div class="tl-item"><div class="tl-dot teal"></div><div class="tl-title">Si durmieron en Tinogasta (Opción A del día 5)</div><div class="tl-sub"><span class="tl-time">Salida 09:00</span> — RN60, Ruta del Adobe, ~50km, 1h de manejo. <span class="tl-time">Llegada ~10:00-11:00</span>, con tiempo de sobra antes del check-in.</div></div>
+      <div class="tl-item"><div class="tl-dot green"></div><div class="tl-title">Si ya llegaron a Fiambalá el día 5 (Opción B)</div><div class="tl-sub">Día totalmente libre por la mañana — pasear por el pueblo, cambiar del alojamiento provisorio a la valija lista para el check-in.</div></div>
+      <div class="tl-item"><div class="tl-dot blue"></div><div class="tl-title"><span class="tl-time">16:00</span>Check-in Hotel Abaucan, Fiambalá</div><div class="tl-sub">3 noches confirmadas (15, 16 y 17/10), reserva N° 90514, habitación Superior con media pensión.</div></div>
+    </div><div class="sep"></div>
+    <div class="tip-item"><div class="tip-icon">⛽</div><div class="tip-text">Cargar tanque lleno en Fiambalá al llegar, pensando en el día 9 (salida hacia El Peñón).</div></div>
+    <div class="tip-item"><div class="tip-icon">📞</div><div class="tip-text"><strong>Pendiente:</strong> el voucher figura "a confirmar" — enviar comprobante de la garantía (1 noche) antes de viajar.</div></div>
+    </div></div>
+    <div><div class="card"><div class="card-title">📺 Videos — Ruta del Adobe y Fiambalá</div><div class="video-grid">
+      <div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=virguidetti+fiambala+ruta+60+seismiles')"><div class="video-thumb" style="background:#0a1020;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center"><div style="font-size:1.5rem">🏍️</div><div style="font-size:.65rem;color:#5ab4ff;margin-top:3px">Vir Guidetti</div></div></div><div class="video-info"><div class="video-channel">Vir Guidetti ★ CLAVE</div><div class="video-title">RN60 Fiambalá — Ruta del Adobe y Seismiles</div></div></div>
+    </div></div></div>
+  </div>
+</div>
+
+<!-- ==================== DÍA 7 ==================== -->
+<div id="page-d7" class="page">
+  <div class="day-header" style="border-color:#1a8fff44"><div class="day-num-big" style="color:#1a2d42">07</div><div class="day-info-main"><div class="day-title" style="color:#5ab4ff">Fiambalá → Seismiles / Balcón del Pissis</div><div class="day-route">Vie 16/10 · Salida 07:00 · Regreso estimado 14:00-15:00 · ~200 km i/v · TODO ASFALTO RN60</div><div class="day-pills"><span class="pill badge-blue">Asfalto RN60</span><span class="pill" style="background:#f5c84222;color:#f5c842;border:1px solid #f5c84244">4.700 msnm</span></div></div></div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Detalle del día</div><div class="timeline">
+      <div class="tl-item"><div class="tl-dot blue"></div><div class="tl-title"><span class="tl-time">07:00</span>Salida Fiambalá · Nafta LLENA</div><div class="tl-sub">RN60 hacia el Paso San Francisco. Todo asfalto en excelente estado.</div></div>
+      <div class="tl-item"><div class="tl-dot blue" style="background:#f5c842"></div><div class="tl-title"><span class="tl-time">~09:30-12:00</span>Balcón del Pissis — 4.700 msnm</div><div class="tl-sub">Volcanes Pissis y Ojos del Salado a la vista. Lagunas de colores. 2–3 hs en el lugar.</div></div>
+      <div class="tl-item"><div class="tl-dot blue"></div><div class="tl-title"><span class="tl-time">~14:00-15:00</span>Regreso a Fiambalá · Tarde en el hotel</div><div class="tl-sub">Piscina del Abaucan para recuperarse.</div></div>
+    </div><div class="sep"></div>
+    <div class="tip-item"><div class="tip-icon">🔄</div><div class="tip-text"><strong>Actividad alternativa:</strong> jornada de bodegas (Don Ceferino + Finca Don Diego) o descanso total.</div></div>
+    <div class="tip-item"><div class="tip-icon">⛽</div><div class="tip-text">Salir con tanque lleno — no hay estaciones en los 200km del recorrido.</div></div>
+    </div></div>
+    <div><div class="card"><div class="card-title">📺 Videos — RN60 y Seismiles</div><div class="video-grid">
+      <div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=virguidetti+ruta+60+seismiles+catamarca')"><div class="video-thumb" style="background:#0a1020;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center"><div style="font-size:1.5rem">🏍️</div><div style="font-size:.65rem;color:#5ab4ff;margin-top:3px">Vir Guidetti</div></div></div><div class="video-info"><div class="video-channel">Vir Guidetti ★★★</div><div class="video-title">RN60 Catamarca — camino de los Seismiles</div></div></div>
+    </div></div></div>
+  </div>
+</div>
+
+<!-- ==================== DÍA 8 ==================== -->
+<div id="page-d8" class="page">
+  <div class="day-header" style="border-color:#1a8fff44"><div class="day-num-big" style="color:#1a2d42">08</div><div class="day-info-main"><div class="day-title" style="color:#5ab4ff">Fiambalá — Dunas Tatón + Termas</div><div class="day-route">Sáb 17/10 · Salida 09:00 · Regreso ~19:00 · ~60 km · Última noche en Abaucan</div><div class="day-pills"><span class="pill badge-blue">Relax</span><span class="pill" style="background:#f5c84222;color:#f5c842;border:1px solid #f5c84244">Sandboard</span></div></div></div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Detalle del día</div><div class="timeline">
+      <div class="tl-item"><div class="tl-dot blue"></div><div class="tl-title"><span class="tl-time">09:00</span>Dunas de Tatón / Saujil</div><div class="tl-sub">~14-30 km de ripio desde Fiambalá. Sandboard (llevar tabla o alquilar ahí).</div></div>
+      <div class="tl-item"><div class="tl-dot blue" style="background:#00c977"></div><div class="tl-title"><span class="tl-time">~14:00</span>Termas de Fiambalá</div><div class="tl-sub">17 km del centro, asfalto. Piscinas termales escalonadas, 1.750msnm. Atardecer épico ~19:00.</div></div>
+      <div class="tl-item"><div class="tl-dot blue"></div><div class="tl-title">Noche — última en Hotel Abaucan</div><div class="tl-sub">Checkout mañana antes de las 10:30. Cargar nafta hoy mismo.</div></div>
+    </div><div class="sep"></div>
+    <div class="tip-item"><div class="tip-icon">🔄</div><div class="tip-text"><strong>Actividad alternativa:</strong> Ruta del Vino de Altura o Museo del Hombre / ferias artesanales.</div></div>
+    <div class="tip-item"><div class="tip-icon">⛽⛽</div><div class="tip-text"><strong>Carga crítica hoy mismo.</strong> Llenar el tanque en Fiambalá antes de dormir — última estación confiable antes del tramo largo del día 9.</div></div>
+    </div></div>
+    <div><div class="card"><div class="card-title">📺 Videos — Dunas Tatón y Termas</div><div class="video-grid">
+      <div class="video-card" onclick="openYT('https://www.youtube.com/results?search_query=dunas+taton+fiambala+moto+catamarca')"><div class="video-thumb" style="background:#1a1000;display:flex;align-items:center;justify-content:center;padding-top:0;height:90px"><div style="text-align:center;font-size:1.8rem">🏜️</div></div><div class="video-info"><div class="video-channel">Varios canales</div><div class="video-title">Dunas de Tatón — sandboard en Fiambalá</div></div></div>
+    </div></div></div>
+  </div>
+</div>
+
+<!-- ==================== DÍA 9 ==================== -->
+<div id="page-d9" class="page">
+  <div class="day-header" style="border-color:#00c97744"><div class="day-num-big" style="color:#0d2a1a">09</div><div class="day-info-main"><div class="day-title" style="color:#3ddba0">Checkout Abaucan → El Peñón</div><div class="day-route">Dom 18/10 · Checkout 10:30 · Llegada estimada 18:00-19:00 · ~220 km · ~7.5h</div><div class="day-pills"><span class="pill badge-red">Checkout 10:30</span><span class="pill badge-green">Reserva confirmada</span><span class="pill badge-fuel">⛽⛽ Tramo largo/ripio</span></div></div></div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Detalle del día</div><div class="timeline">
+      <div class="tl-item"><div class="tl-dot green"></div><div class="tl-title"><span class="tl-time">10:30-11:00</span>Checkout Hotel Abaucan</div><div class="tl-sub">Salir apenas se pueda — es uno de los días más largos y exigentes del viaje.</div></div>
+      <div class="tl-item"><div class="tl-dot green"></div><div class="tl-title"><span class="tl-time">~13:30</span>Villa Vil / Belén (ripio)</div><div class="tl-sub">Tramo de montaña, poco tránsito y poca señal. Llevar agua, comida y abrigo.</div></div>
+      <div class="tl-item"><div class="tl-dot green"></div><div class="tl-title"><span class="tl-time">~15:30</span>Ruta Provincial 43 hacia El Peñón</div><div class="tl-sub">Tramo entre Villa Vil y la Cuesta de Randolfo es no pavimentado.</div></div>
+      <div class="tl-item"><div class="tl-dot green"></div><div class="tl-title"><span class="tl-time">~18:00-19:00</span>Check-in Ecolodge El Peñón</div><div class="tl-sub">Dentro de la ventana 14:00-23:00. Habitación doble, 2 camas, 2 noches.</div></div>
+    </div><div class="sep"></div>
+    <div class="tip-item"><div class="tip-icon">⛽⛽</div><div class="tip-text"><strong>Sin estaciones confiables en el tramo.</strong> Cargar 100% lleno al salir de Fiambalá. Cargar de nuevo en Belén si el trayecto pasa por ahí. Evaluar bidón de reserva.</div></div>
+    <div class="tip-item"><div class="tip-icon">📵</div><div class="tip-text">Sin señal celular en gran parte del tramo — avisar a familia antes de salir.</div></div>
+    </div></div></div>
+  </div>
+</div>
+
+<!-- ==================== DÍA 10 ==================== -->
+<div id="page-d10" class="page">
+  <div class="day-header" style="border-color:#00c97744"><div class="day-num-big" style="color:#0d2a1a">10</div><div class="day-info-main"><div class="day-title" style="color:#3ddba0">El Peñón — día libre en la puna</div><div class="day-route">Lun 19/10 · Segunda noche en el ecolodge</div><div class="day-pills"><span class="pill badge-green">Día libre</span><span class="pill badge-amber">+3.500 msnm</span></div></div></div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Detalle del día — actividades</div><div class="timeline">
+      <div class="tl-item"><div class="tl-dot green"></div><div class="tl-title">Opción A — Campo de Piedra Pómez</div><div class="tl-sub">Formaciones de piedra pómez blancas, paisaje lunar.</div></div>
+      <div class="tl-item"><div class="tl-dot green"></div><div class="tl-title">Opción B — Laguna Grande y Volcán Galán</div><div class="tl-sub">Santuario de flamencos rosados. Volcán Galán, uno de los cráteres más grandes del mundo.</div></div>
+      <div class="tl-item"><div class="tl-dot teal"></div><div class="tl-title">Opción C — Antofagasta de la Sierra</div><div class="tl-sub">A ~48km de El Peñón. Buena excursión de medio día.</div></div>
+      <div class="tl-item"><div class="tl-dot gray"></div><div class="tl-title">Opción D — descanso + estrellas</div><div class="tl-sub">Cielos nocturnos excepcionales, sin contaminación lumínica.</div></div>
+    </div><div class="sep"></div>
+    <div class="tip-item"><div class="tip-icon">😮‍💨</div><div class="tip-text"><strong>Altura.</strong> +3.500msnm — moverse despacio, hidratarse mucho.</div></div>
+    <div class="tip-item"><div class="tip-icon">⛽</div><div class="tip-text">Verificar con el anfitrión si hay venta de combustible en el pueblo.</div></div>
+    </div></div></div>
+  </div>
+</div>
+
+<!-- ==================== DÍA 11 ==================== -->
+<div id="page-d11" class="page">
+  <div class="day-header" style="border-color:#00c97744"><div class="day-num-big" style="color:#0d2a1a">11</div><div class="day-info-main"><div class="day-title" style="color:#3ddba0">Checkout El Peñón → Andalgalá</div><div class="day-route">Mar 20/10 · Salida sugerida 07:00 (ventana 06:00-10:00) · Llegada estimada 14:30-15:30 · ~280 km · ~7.7h</div><div class="day-pills"><span class="pill badge-red">Checkout temprano</span><span class="pill badge-green">Reserva confirmada</span><span class="pill badge-fuel">⛽⛽ Tramo largo</span></div></div></div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Detalle del día</div><div class="timeline">
+      <div class="tl-item"><div class="tl-dot green"></div><div class="tl-title"><span class="tl-time">07:00</span>Checkout ecolodge El Peñón</div><div class="tl-sub">Salir lo más temprano posible dentro de la ventana (06:00-10:00) — el tramo es largo.</div></div>
+      <div class="tl-item"><div class="tl-dot green"></div><div class="tl-title"><span class="tl-time">~10:00</span>Belén — nafta (si el trayecto pasa por acá)</div><div class="tl-sub">Última estación confiable antes de Andalgalá.</div></div>
+      <div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title"><span class="tl-time">~14:30-15:30</span>Llegada — Andalgalá</div><div class="tl-sub">Check-in Dptos La Perla, anfitrión Dino, desde las 15:00.</div></div>
+    </div><div class="sep"></div>
+    <div class="tip-item"><div class="tip-icon">⛽⛽</div><div class="tip-text"><strong>Carga crítica.</strong> Cargar en Belén y de nuevo al llegar a Andalgalá.</div></div>
+    <div class="tip-item"><div class="tip-icon">📌</div><div class="tip-text">Confirmar estado de la RP43 antes de salir — el sector Villa Vil-Cuesta de Randolfo no está pavimentado.</div></div>
+    </div></div></div>
+  </div>
+</div>
+
+<!-- ==================== DÍA 12 ==================== -->
+<div id="page-d12" class="page">
+  <div class="day-header"><div class="day-num-big">12</div><div class="day-info-main"><div class="day-title">Andalgalá → Ruta Provincial 1 → El Rodeo / La Puerta <em>(sugerido)</em></div><div class="day-route">Mié 21/10 · Checkout 10:00 · Llegada estimada 15:00 · ~160 km · ~5h</div><div class="day-pills"><span class="pill" style="background:#e24b4a22;color:#e27a7a;border:1px solid #e24b4a44">A DEFINIR</span><span class="pill badge-amber">Vía Ruta Prov. 1</span></div></div></div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Detalle del día</div><div class="timeline">
+      <div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title"><span class="tl-time">10:00</span>Checkout Dptos La Perla, Andalgalá</div><div class="tl-sub">Cargar nafta antes de salir — última estación grande antes de la Sierra de Ambato.</div></div>
+      <div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title"><span class="tl-time">~12:00</span>Cruce por la Sierra de Ambato (Ruta Provincial 1)</div><div class="tl-sub">Alternativa a volver por Chumbicha/RN38. Tramo de montaña con sectores de ripio.</div></div>
+      <div class="tl-item"><div class="tl-dot green"></div><div class="tl-title"><span class="tl-time">~15:00</span>Llegada — El Rodeo (sugerido)</div><div class="tl-sub">Buena oferta de hospedaje y gastronomía.</div></div>
+      <div class="tl-item"><div class="tl-dot teal"></div><div class="tl-title">Alternativa — La Puerta</div><div class="tl-sub">Más chico y tranquilo, a 12km de El Rodeo por RP16 pavimentada.</div></div>
+    </div><div class="sep"></div>
+    <div class="tip-item"><div class="tip-icon">🔄</div><div class="tip-text"><strong>Alternativa a esta ruta:</strong> volver por RN40 sur → Chumbicha → RN38, más larga pero pavimentada.</div></div>
+    <div class="tip-item"><div class="tip-icon">⛽</div><div class="tip-text">Cargar tanque lleno en Andalgalá.</div></div>
+    <div class="tip-item"><div class="tip-icon">📌</div><div class="tip-text"><strong>Pendiente:</strong> confirmar estado de la Ruta Provincial 1 y reservar alojamiento en El Rodeo o La Puerta.</div></div>
+    </div></div></div>
+  </div>
+</div>
+
+<!-- ==================== DÍA 13 ==================== -->
+<div id="page-d13" class="page">
+  <div class="day-header"><div class="day-num-big">13</div><div class="day-info-main"><div class="day-title">→ San Fernando del Valle de Catamarca</div><div class="day-route">Jue 22/10 · Salida flexible ~13:00 · Llegada estimada ~14:00 · ~45 km · ~1h</div><div class="day-pills"><span class="pill badge-green">Reserva confirmada</span></div></div></div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Detalle del día</div><div class="timeline">
+      <div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title">Mañana libre en El Rodeo / La Puerta</div><div class="tl-sub">El tramo es corto (~1h), así que se puede salir recién después del almuerzo y aprovechar la mañana en la sierra.</div></div>
+      <div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title"><span class="tl-time">~14:00</span>Llegada a SF del Valle</div><div class="tl-sub">Tiempo libre en el centro antes del check-in.</div></div>
+      <div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title"><span class="tl-time">16:00</span>Check-in Hotel Casino Catamarca</div><div class="tl-sub">151 Esquiú. Se usa 1 sola noche (22 al 23), dado el vuelo del día siguiente.</div></div>
+    </div><div class="sep"></div>
+    <div class="tip-item"><div class="tip-icon">⛽</div><div class="tip-text">Tramo corto — aprovechar la llegada para cargar tanque lleno antes de la entrega de las motos mañana.</div></div>
+    </div></div></div>
+  </div>
+</div>
+
+<!-- ==================== DÍA 14 ==================== -->
+<div id="page-d14" class="page">
+  <div class="day-header" style="border-color:#9b59b644"><div class="day-num-big" style="color:#1a1030">14</div><div class="day-info-main"><div class="day-title" style="color:#c39bd3">Entrega de motos · día libre · vuelo de regreso</div><div class="day-route">Vie 23/10 · Traslado al aeropuerto 17:00-17:15 · Despegue 19:45 desde CTC</div><div class="day-pills"><span class="pill" style="background:#9b59b622;color:#c39bd3;border:1px solid #9b59b644">Vuelo 19:45</span></div></div></div>
+  <div class="g2">
+    <div><div class="card"><div class="card-title">Logística del día final</div><div class="timeline">
+      <div class="tl-item"><div class="tl-dot orange"></div><div class="tl-title"><span class="tl-time">~09:00-10:00</span>Entrega de motos</div><div class="tl-sub">En San Fernando del Valle. Coordinar punto exacto y horario con la agencia/dueño con anticipación.</div></div>
+      <div class="tl-item"><div class="tl-dot blue"></div><div class="tl-title">Mañana/mediodía libre</div><div class="tl-sub">Catedral Basílica de Nuestra Señora del Valle, museos, ferias de artesanías, o Dique El Jumeal si da el tiempo.</div></div>
+      <div class="tl-item"><div class="tl-dot purple"></div><div class="tl-title"><span class="tl-time">17:00-17:15</span>Traslado al Aeropuerto Felipe Varela (CTC)</div><div class="tl-sub">~15-20 min desde el centro. Salir con margen (~2h30 antes del despegue) para el check-in de vuelo doméstico.</div></div>
+      <div class="tl-item"><div class="tl-dot purple"></div><div class="tl-title"><span class="tl-time">19:45</span>Despegue — vuelo de regreso</div><div class="tl-sub">Fin del viaje. Confirmar destino final/escalas del vuelo.</div></div>
+    </div><div class="sep"></div>
+    <div class="tip-item"><div class="tip-icon">📌</div><div class="tip-text"><strong>Pendiente:</strong> confirmar punto y horario exacto de entrega de motos, y si se puede dar de baja la 2ª noche del Hotel Casino (23 al 24) ya que no se usa.</div></div>
+    </div></div></div>
+  </div>
+</div>
+
+<!-- ==================== MAPAS ==================== -->
+<div id="page-mapas" class="page">
+  <div class="map-tabs">
+    <button class="map-tab active" onclick="switchMap('all',this)">Todo el viaje</button>
+    <button class="map-tab" onclick="switchMap('villaallende',this)">Villa Allende</button>
+    <button class="map-tab" onclick="switchMap('larioja',this)">La Rioja</button>
+    <button class="map-tab" onclick="switchMap('chilecito',this)">Chilecito</button>
+    <button class="map-tab" onclick="switchMap('fiambala',this)">Fiambalá</button>
+    <button class="map-tab" onclick="switchMap('pomez',this)">El Peñón</button>
+    <button class="map-tab" onclick="switchMap('arita',this)">Andalgalá</button>
+    <button class="map-tab" onclick="switchMap('elrodeo',this)">El Rodeo / La Puerta</button>
+    <button class="map-tab" onclick="switchMap('catamarca',this)">San Fernando del Valle</button>
+  </div>
+  <div id="map-container" class="map-frame">
+    <iframe id="map-iframe" width="100%" height="100%" style="border:0" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3000000!2d-67!3d-27!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1ses!2sar!4v1"></iframe>
+  </div>
+  <div class="g3" style="margin-top:1rem">
+    <div class="card" style="cursor:pointer" onclick="switchMap('fiambala',document.querySelectorAll('.map-tab')[4])">
+      <div class="card-title">🌵 Fiambalá + Termas</div>
+      <p>Hotel Abaucan (3 noches confirmadas), Dunas Tatón/Saujil, Termas, Balcón del Pissis</p>
+    </div>
+    <div class="card" style="cursor:pointer" onclick="switchMap('pomez',document.querySelectorAll('.map-tab')[5])">
+      <div class="card-title">🏔️ El Peñón</div>
+      <p>Ecolodge confirmado (2 noches) — Campo de Piedra Pómez, Laguna Grande</p>
+    </div>
+    <div class="card" style="cursor:pointer" onclick="switchMap('arita',document.querySelectorAll('.map-tab')[6])">
+      <div class="card-title">🏘️ Andalgalá</div>
+      <p>Dptos La Perla confirmado — antes de cruzar por Ruta Provincial 1</p>
+    </div>
+    <div class="card" style="cursor:pointer" onclick="switchMap('elrodeo',document.querySelectorAll('.map-tab')[7])">
+      <div class="card-title">⛰️ El Rodeo / La Puerta</div>
+      <p>Parada sugerida de vuelta (día 12), Sierra de Ambato, Ruta Provincial 1</p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== TIPS ==================== -->
+<div id="page-tips" class="page">
+  <div class="g2">
+    <div>
+      <div class="card">
+        <div class="card-title">⛽ Combustible — cuándo repostar SÍ o SÍ</div>
+        <div class="tip-item"><div class="tip-icon">1️⃣</div><div class="tip-text"><strong>Día 2 — Villa Allende→Chilecito directo (~590km).</strong> Cargar en Cruz del Eje y de nuevo en La Rioja como mínimo — es el tramo más largo de todo el viaje.</div></div>
+        <div class="tip-item"><div class="tip-icon">2️⃣</div><div class="tip-text"><strong>Día 5 — Chilecito→Tinogasta/Fiambalá (~220-270km).</strong> Cargar en Chilecito o Villa Unión antes de seguir.</div></div>
+        <div class="tip-item"><div class="tip-icon">3️⃣</div><div class="tip-text"><strong>Día 8→9 — antes de salir de Fiambalá.</strong> Última estación confiable antes de El Peñón.</div></div>
+        <div class="tip-item"><div class="tip-icon">4️⃣</div><div class="tip-text"><strong>Día 11 — El Peñón→Andalgalá (~280km).</strong> Cargar en Belén si el trayecto pasa por ahí; llevar reserva.</div></div>
+        <div class="tip-item"><div class="tip-icon">5️⃣</div><div class="tip-text"><strong>Día 12 — Andalgalá antes de la Ruta 1.</strong> Cargar tanque lleno; confirmar disponibilidad en El Rodeo/La Puerta.</div></div>
+        <div class="tip-item"><div class="tip-icon">🧯</div><div class="tip-text"><strong>Recomendación general:</strong> bidón de reserva (5L) para los días 9 y 11.</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">🏍️ CF450 MT — Consejos específicos</div>
+        <div class="tip-item"><div class="tip-icon">🔧</div><div class="tip-text"><strong>Service antes de salir.</strong> Aceite, cadena, filtros, neumáticos nuevos.</div></div>
+        <div class="tip-item"><div class="tip-icon">🏜️</div><div class="tip-text"><strong>Ripio de montaña (días 5, 9, 11, 12).</strong> Velocidad 35-50 km/h.</div></div>
+        <div class="tip-item"><div class="tip-icon">📡</div><div class="tip-text"><strong>GPS offline.</strong> Maps.me + Wikiloc con tracks de RP43 y Ruta Provincial 1 descargados antes de salir.</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-title">✈️ Logística de cierre — vuelo y motos</div>
+        <div class="tip-item"><div class="tip-icon">🏍️</div><div class="tip-text"><strong>Entrega de motos.</strong> Coordinar con tiempo el punto exacto en SF del Valle para la mañana del 23/10.</div></div>
+        <div class="tip-item"><div class="tip-icon">🏨</div><div class="tip-text"><strong>Hotel Casino Catamarca.</strong> Reservado 2 noches (22-23) pero el vuelo sale la noche del 23 — avisar al hotel para dar de baja la noche sobrante.</div></div>
+        <div class="tip-item"><div class="tip-icon">🕐</div><div class="tip-text"><strong>Margen para el aeropuerto.</strong> Salir del hotel/centro ~17:00-17:15 para el vuelo de las 19:45 (check-in doméstico recomendado 1.5-2h antes).</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">🎯 Actividades alternativas — resumen por destino</div>
+        <table>
+          <thead><tr><th>Destino</th><th>Ya planeado</th><th>Alternativa</th></tr></thead>
+          <tbody>
+            <tr><td>Chilecito (D4)</td><td>Famatina / Mina La Mejicana</td><td>Cuesta de Miranda + Cable Carril, o Talampaya</td></tr>
+            <tr><td>Fiambalá (D7)</td><td>Balcón del Pissis (4.700msnm)</td><td>Bodegas (Don Ceferino + Finca Don Diego) o descanso</td></tr>
+            <tr><td>Fiambalá (D8)</td><td>Dunas Tatón + Termas</td><td>Ruta del Vino de Altura o Museo del Hombre</td></tr>
+            <tr><td>El Peñón (D10)</td><td>Campo de Piedra Pómez</td><td>Laguna Grande / Volcán Galán, o Antofagasta de la Sierra</td></tr>
+            <tr><td>SF del Valle (D14)</td><td>Catedral y museos</td><td>Dique El Jumeal (si el horario del vuelo lo permite)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  const tabs = document.querySelectorAll('.tab');
+  const map = {
+    'generalidades':0,'comer':1,'pernocte':2,
+    'd1':3,'d2':4,'d3':5,'d4':6,'d5':7,'d6':8,'d7':9,'d8':10,
+    'd9':11,'d10':12,'d11':13,'d12':14,'d13':15,'d14':16,
+    'mapas':17,'tips':18
+  };
+  if(map[id] !== undefined) tabs[map[id]].classList.add('active');
+}
+
+const mapSrcs = {
+  all: 'https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3000000!2d-67!3d-27!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1ses!2sar!4v1',
+  villaallende: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d100000!2d-64.30!3d-31.29!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1ses!2sar!4v1',
+  larioja: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d200000!2d-66.85!3d-29.41!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1ses!2sar!4v1',
+  chilecito: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d100000!2d-67.50!3d-29.16!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1ses!2sar!4v1',
+  fiambala: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d50000!2d-67.62!3d-27.69!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1ses!2sar!4v1',
+  pomez: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d80000!2d-67.45!3d-26.55!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1ses!2sar!4v1',
+  arita: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d80000!2d-66.32!3d-27.60!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1ses!2sar!4v1',
+  elrodeo: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d80000!2d-65.85!3d-28.30!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1ses!2sar!4v1',
+  catamarca: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d50000!2d-65.79!3d-28.47!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1ses!2sar!4v1'
+};
+
+function switchMap(key, btn) {
+  document.querySelectorAll('.map-tab').forEach(t => t.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  document.getElementById('map-iframe').src = mapSrcs[key] || mapSrcs.all;
+}
+
+function openYT(url) {
+  window.open(url, '_blank');
+}
+</script>
+</body>
+</html>
